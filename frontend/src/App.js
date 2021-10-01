@@ -4,6 +4,7 @@ import { Home, Watch, Login, Signup, Profile, EditProfile, NotFound, Search, Upl
 import NavBar from 'components/Navbar';
 import Layout from 'components/Layout';
 import GlobalStyle from 'globalStyle';
+import Footer from 'components/Footer';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           </Route>
         </Switch>
       </Layout>
+      <Footer />
     </Router>
   );
 }

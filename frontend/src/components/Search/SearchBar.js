@@ -3,27 +3,25 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SearchBarContainer = styled.form`
-  flex: 1;
-  display: flex;
-  align-items: center;
+  width: 100%;
+  margin: 3rem 0;
+
 `;
 
 const InputContainer = styled.div`
+  flex: 1;
   display: flex;
-  /* @media screen and (max-width: 768px) {
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 768px) {
     width: 100%;
-  } */
+  }
 `;
 
 const Input = styled.input`
   width: 30rem;
+  padding: 10px;
   border-radius: 5px;
-  @media screen and (max-width: 768px) {
-    width: 20rem;
-  }
-  @media screen and (max-width: 560px) {
-    width: 14rem;
-  }
 `;
 
 function SearchBar() {
