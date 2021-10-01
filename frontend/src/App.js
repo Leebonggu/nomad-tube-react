@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch}  from 'react-router-dom';
+import { Home, Watch, Login, Signup, Profile, EditProfile, NotFound } from 'pages';
+import NavBar from 'components/Navbar';
+import Layout from 'components/Layout';
+import GlobalStyle from 'globalStyle';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <GlobalStyle />
+      <NavBar />
+      <Layout>
+
+        <Switch>
+          <Route path="/" exact>
+            <Home />
+          </Route>
+          <Route path="/watch/:id" exact>
+            <Watch />
+          </Route>
+          <Route path="/search" exact>
+            <Watch />
+          </Route>
+          <Route path="/login" exact>
+            <Login />
+          </Route>
+          <Route path="/signup" exact>
+            <Signup />
+          </Route>
+          <Route path="/profile/:id" exact>
+            <Profile />
+          </Route>
+          <Route path="/edit-profile/:id" exact>
+            <EditProfile />
+          </Route>
+          <Route path="*" exact>
+            <NotFound />
+          </Route>
+        </Switch>
+      </Layout>
+    </Router>
   );
 }
 
