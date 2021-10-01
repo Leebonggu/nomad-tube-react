@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useForm } from "react-hook-form";
-import { black, red, white } from 'styles/color';
+import { black, white } from 'styles/color';
 import { Container } from 'styles/common';
 import LoginForm from 'components/Login/LoginForm';
 import useInput from 'hooks/useInput';
-import { Warning } from 'components/common';
+import { Button, Warning } from 'components/common';
 
 const LoginContainer = styled(Container)`
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${white};
 `;
 
 const LoginContents = styled.div`
@@ -39,17 +40,43 @@ const Header = styled.div`
 `;
 
 const InputContainer = styled.div`
-  background: ${white};
   flex: 4;
   display: flex;
-  flex-direction: columns;
+  flex-direction: column;
+
+`;
+
+const SocialLoginContainer = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  flex-direction: column;
+
+
+`;
+
+const SocialLoginText = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+`;
+const SocialLoginButtonContainer = styled.div`
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  button {
+    width: 100%;
+    background-color: ${black};
+  }
 `;
 
 function Login() {
   const [error, handleError] = useInput(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => {
+    console.log(data);
+  };
 
   return (
     <LoginContainer>
@@ -64,6 +91,12 @@ function Login() {
         />
         {error && <Warning>{error}</Warning>}
         </InputContainer>
+        <SocialLoginContainer>
+          <SocialLoginText>소셜로그인</SocialLoginText>
+          <SocialLoginButtonContainer>
+            <Button big>GITHUB</Button>
+          </SocialLoginButtonContainer>
+        </SocialLoginContainer>
       </LoginContents>
     </LoginContainer>
   );

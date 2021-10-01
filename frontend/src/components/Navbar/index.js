@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { background, red, white, black } from 'styles/color';
-import { Button, Container } from 'styles/common';
+import { Container } from 'styles/common';
+import { Button } from 'components/common';
+
 
 const Nav = styled.nav`
   width: 100%;
@@ -15,7 +17,7 @@ const Nav = styled.nav`
   position: sticky;
   font-size: 1.5rem;
   top: 0;
-  z-index: 500;
+  z-index: 999;
 
   &:hover {
     color: ${red};
@@ -108,6 +110,12 @@ function Navbar() {
         <NavMenu onClick={handleOpenHamburger} openHamburger={openHamburger}>
           <NavMenuItem>
             <Link to="/search">SEARCH</Link>
+          </NavMenuItem>
+          <NavMenuItem>
+            <Link to="/upload">UPLOAD</Link>
+          </NavMenuItem>
+          <NavMenuItem>
+            <Link to="/profile">PROFILE</Link>
           </NavMenuItem>
           <NavMenuItem>
             <Link to="/login">LOGIN</Link>

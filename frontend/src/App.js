@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch}  from 'react-router-dom';
-import { Home, Watch, Login, Signup, Profile, EditProfile, NotFound } from 'pages';
+import { Home, Watch, Login, Signup, Profile, EditProfile, NotFound, Search, Upload } from 'pages';
 import NavBar from 'components/Navbar';
 import Layout from 'components/Layout';
 import GlobalStyle from 'globalStyle';
@@ -11,7 +11,6 @@ function App() {
       <GlobalStyle />
       <NavBar />
       <Layout>
-
         <Switch>
           <Route path="/" exact>
             <Home />
@@ -20,7 +19,13 @@ function App() {
             <Watch />
           </Route>
           <Route path="/search" exact>
-            <Watch />
+            <Search />
+          </Route>
+          <Route path="/upload" exact>
+            <Upload />
+          </Route>
+          <Route path="/profile" exact>
+            <Profile />
           </Route>
           <Route path="/login" exact>
             <Login />

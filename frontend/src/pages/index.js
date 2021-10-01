@@ -5,4 +5,5 @@ export { default as Profile } from './Profile';
 export { default as EditProfile } from './EditProfile';
 export { default as Watch } from './Watch';
 export { default as Search } from './Search';
+export { default as Upload } from './Upload';
 export { default as NotFound } from './NotFound';

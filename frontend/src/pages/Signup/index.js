@@ -21,7 +21,6 @@ const SignupContents = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  
   @media screen and (max-width: 768px) {
     width: 100%;
     height: 500px;
@@ -46,15 +45,20 @@ const InputContainer = styled.div`
   background: ${white};
   flex: 4;
   display: flex;
-  flex-direction: columns;
+  flex-direction: column;
   justify-content: center;
 `;
 
 
 function Signup() {
-  const [error, handleError] = useInput(null);
+  const [error, _, setError] = useInput(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+  const onSubmit = ({ email, password, passwordConfirm, location }) => {
+    if (password !== passwordConfirm) {
+      setError('비밀번호가 일치하지 않습니다');
+    }
+    console.log(email, password, passwordConfirm, location);
+  };
 
   return (
     <SignupContainer>
@@ -67,7 +71,6 @@ function Signup() {
           errors={errors}
           onSubmit={onSubmit}
         />
-        {error && <Warning>{error}</Warning>}
         </InputContainer>
       </SignupContents>
     </SignupContainer>

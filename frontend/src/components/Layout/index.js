@@ -5,8 +5,8 @@ import { subBackgroud } from 'styles/color';
 import { Container } from 'styles/common';
 
 const LayoutContainer = styled(Container)`
+  width: 100%;
   height: 100vh;
-  background-color: ${subBackgroud};
 `;
 
 function Layout({ children }) {
