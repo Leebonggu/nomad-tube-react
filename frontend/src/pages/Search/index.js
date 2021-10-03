@@ -6,6 +6,7 @@ import SearchResult from 'components/Search/SearchResult';
 import { Container } from 'styles/common';
 
 const SearchContainer = styled(Container)`
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -1,6 +1,8 @@
 import React from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import { useForm } from "react-hook-form";
+import { useHistory } from 'react-router-dom';
 import { black, white } from 'styles/color';
 import { Container } from 'styles/common';
 import SignupForm from 'components/Signup/SignupForm';
@@ -16,7 +18,7 @@ const SignupContainer = styled(Container)`
 
 const SignupContents = styled.div`
   width: 500px;
-  height: 750px;
+  height: 650px;
   min-width: 250px;
   display: flex;
   flex-direction: column;
@@ -49,16 +51,26 @@ const InputContainer = styled.div`
   justify-content: center;
 `;
 
+axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.withCredentials = true;
 
 function Signup() {
+  const history = useHistory();
   const [error, _, setError] = useInput(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = ({ email, password, passwordConfirm, location }) => {
-    if (password !== passwordConfirm) {
-      setError('비밀번호가 일치하지 않습니다');
-    }
-    console.log(email, password, passwordConfirm, location);
-  };
+    // if (password !== passwordConfirm) {
+    //   return setError('비밀번호가 일치하지 않습니다');
+    // }
+    axios.post('/apis/root/join', { email, password, passwordConfirm, location })
+      .then(({ data, status }) => history.push('/login'))
+      .catch((e) => {
+        // setError(e.error);
+        const { msg } = e.response.data;
+        setError(msg);
+      });
+    return 0;
+  }
 
   return (
     <SignupContainer>
@@ -70,7 +82,8 @@ function Signup() {
           handleSubmit={handleSubmit}
           errors={errors}
           onSubmit={onSubmit}
-        />
+          />
+        {error && <Warning>{error}</Warning>}
         </InputContainer>
       </SignupContents>
     </SignupContainer>

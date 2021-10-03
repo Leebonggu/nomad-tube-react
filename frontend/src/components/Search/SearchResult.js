@@ -10,7 +10,7 @@ const SearchResultContainer = styled.div`
   justify-content: flex-start;
 
   .empty {
-    height: 100vh;
+    /* height: 100vh; */
   }
 `;
 

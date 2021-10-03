@@ -1,20 +1,24 @@
 import express from 'express';
+import cors from 'cors';
 import morgan from 'morgan';
 import session from 'express-session';
 import flash from 'express-flash';
 import MongoStore from 'connect-mongo';
-import rootRouter from './routers/rootRouter';
-import videoRouter from './routers/videoRouter';
-import userRouter from './routers/uesrRouter';
-import apiRouter from './routers/apiRouter';
+import apis from './routers';
 import { localMiddleware } from './middlewares';
 
 const app = express();
 const logger = morgan('dev');
 
+const corsOptions = {
+  origin: true,
+  credentials : true,
+};
+
 app.set('view engine', 'pug');
 app.set('views', process.cwd() + '/src/views');
 app.use('/uploads', express.static('uploads'));
+app.use(cors(corsOptions))
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -27,9 +31,6 @@ app.use(session({
 }));
 app.use(flash());
 app.use(localMiddleware);
-app.use('/', rootRouter);
-app.use('/users', userRouter);
-app.use('/videos', videoRouter);
-app.use('/api', apiRouter);
+app.use('/apis', apis);
 
 export default app;

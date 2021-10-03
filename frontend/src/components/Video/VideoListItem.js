@@ -11,7 +11,6 @@ const VideoListItemContainer = styled.div`
   background-color: red;
   border-radius: 10px;
   @media screen and (max-width: 992px) {
-    
     width: 300px;
     height: 200px;
   }

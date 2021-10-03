@@ -6,6 +6,8 @@ import { Container } from 'styles/common';
 import LoginForm from 'components/Login/LoginForm';
 import useInput from 'hooks/useInput';
 import { Button, Warning } from 'components/common';
+import axios from 'axios';
+import { useHistory } from 'react-router';
 
 const LoginContainer = styled(Container)`
   height: 100vh;
@@ -52,8 +54,6 @@ const SocialLoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
-
 `;
 
 const SocialLoginText = styled.div`
@@ -71,12 +71,35 @@ const SocialLoginButtonContainer = styled.div`
   }
 `;
 
+axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.withCredentials = true;
+
 function Login() {
-  const [error, handleError] = useInput(null);
+  const history = useHistory();
+  const [error, handleError, setError] = useInput(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => {
-    console.log(data);
+  const onSubmit = ({ email, password }) => {
+    axios.post('apis/root/login',
+      { email, password }, 
+      // { withCredentials: true },
+    )
+      // eslint-disable-next-line consistent-return
+      .then(({ data, status }) => {
+        console.log(data);
+        if (status === 200) {
+          return history.push('/');
+        }
+      })
+      .catch((e) => {
+        const { msg } = e.response.data;
+        console.log(msg);
+        setError(msg);
+      })
   };
+
+  const handleGithubLogin = () => {
+    // axios.get('/')
+  }
 
   return (
     <LoginContainer>
@@ -94,7 +117,7 @@ function Login() {
         <SocialLoginContainer>
           <SocialLoginText>소셜로그인</SocialLoginText>
           <SocialLoginButtonContainer>
-            <Button big>GITHUB</Button>
+            <Button big onClick={handleGithubLogin}>GITHUB</Button>
           </SocialLoginButtonContainer>
         </SocialLoginContainer>
       </LoginContents>

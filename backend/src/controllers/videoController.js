@@ -5,7 +5,7 @@ export const home = async (req, res) => {
   const videos = await Video.find({})
     .sort({ createdAt: 'desc' })
     .populate("owner");
-  return res.render('home', { pageTitle: 'Home' , videos });
+  return res.status(200).send(videos);
 };
 
 export const watch = async (req, res) => {
@@ -57,20 +57,22 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
-  const { user: { _id } } = req.session;
+  console.log(req.body);
+  console.log(req.file);
+  // const { user: { _id } } = req.session;
   const { path: fileUrl } = req.file;
   const { title, description, hashtags } = req.body;
   try {
-    const newVideo = await Video.create({
-      title,
-      description,
-      fileUrl,
-      owner: _id,
-      hashtags: Video.formatHashtags(hashtags)
-    });
-    const user = await User.findById(_id);
-    user.videos.push(newVideo._id);
-    user.save();
+  //   const newVideo = await Video.create({
+  //     title,
+  //     description,
+  //     fileUrl,
+  //     owner: _id,
+  //     hashtags: Video.formatHashtags(hashtags)
+  //   });
+  //   const user = await User.findById(_id);
+  //   user.videos.push(newVideo._id);
+  //   user.save();
     return res.redirect(`/`);
   } catch (error) {
     console.log(error);

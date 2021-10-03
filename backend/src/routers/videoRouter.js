@@ -19,9 +19,9 @@ router
   
 router
   .route('/upload')
-  .all(protectorMiddleware)
   .get(getUpload)
   .post(videoUpload.single('video'), postUpload)
+  // .all(protectorMiddleware)
 
 export default router;
 

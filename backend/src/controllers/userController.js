@@ -6,46 +6,46 @@ export const getJoin = (req, res) => {
   res.render('join', { pageTitle: 'Join' });
 };
 export const postJoin = async (req, res) => {
-  const { name, username, email, password, password2, location } = req.body;
-  const pageTitle = 'Join';
-  if (password !== password2) {
-    return res.status(400).render('join', { pageTitle, errorMessage: 'Password confirmation does not match' });
+  const { email, password, passwordConfirm, location } = req.body;
+  if (password !== passwordConfirm) {
+    return res.status(400).send({ msg: '비밀번호가 틀립니다' });
   }
-  const exist = await User.exists({$or: [{ username }, { email }]});
+  const exist = await User.exists({$or: [{ email }]});
   if (exist) {
-    return res.status(400).render('join', { pageTitle, errorMessage: 'username or email is already taken.' });
+    return res.status(400).send({ msg: '이미 존재하는 아이디입니다' });
   }
   try {
     await User.create({
-      name,
-      username,
       email,
       password,
       location,
     });
-    return res.redirect('/login');
+    return res.status(200).send({ msg: '회원가입 성공' });
   } catch (error) {
     console.log(error);
-    return  res.status(400).render('join', { pageTitle, errorMessage: error._message });
+    return res.status(400).send("비밀번호가 다릅니다");
   }
 };
 export const getLogin = (req, res) => {
-  return res.render('login', { pageTitle: 'login'});
+  console.log(2, req.session);
+  return res.status(200).send({ msg: 'Login' })
 };
 export const postLogin = async (req, res) => {
-  const { username, password } = req.body;
-  const pageTitle = 'login';
-  const user = await User.findOne({ username, socialOnly: false });
+  console.log('logginstart')
+  const { email, password } = req.body;
+  const user = await User.findOne({ email, socialOnly: false });
   if (!user) {
-    return res.status(400).render('login', { pageTitle, errorMessage: 'Username does not exsits.' });
+    return res.status(400).send({ msg: '등록된 유저가 아닙니다' });
   }
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
-    return res.status(400).render('login', { pageTitle, errorMessage: 'Wrong Password' });
+    return res.status(400).send({ msg: '비밀번호가 틀렸습니다' });
   }
   req.session.loggedIn = true;
   req.session.user = user;
-  return res.status(302).redirect('/');
+  console.log(1, req.session);
+  // console.log(2, res.cookies);  
+  return res.status(200).send({ msg: '로그인 성공', isLoggedIn: true });
 };
 
 export const startGithubLogin = (req, res) => {

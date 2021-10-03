@@ -3,13 +3,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SearchBarContainer = styled.form`
-  width: 100%;
-  margin: 3rem 0;
-
+  flex: 1;
+  /* margin: 3rem 0; */
+  display: flex;
 `;
 
 const InputContainer = styled.div`
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,6 +21,9 @@ const Input = styled.input`
   width: 30rem;
   padding: 10px;
   border-radius: 5px;
+  @media screen and (max-width: 768px) {
+    width: 20rem;
+  }
 `;
 
 function SearchBar() {
