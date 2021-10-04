@@ -52,7 +52,6 @@ const InputContainer = styled.div`
 `;
 
 axios.defaults.baseURL = 'http://localhost:4000';
-axios.defaults.withCredentials = true;
 
 function Signup() {
   const history = useHistory();

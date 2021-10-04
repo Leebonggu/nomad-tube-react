@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
@@ -18,13 +19,13 @@ function ProtectedRoute({ path, component: Component, render, ...rest }) {
         return Component ? <Component {...props} /> : render(props)
       }}
     />
-  )
+  );
 }
 
 export default ProtectedRoute;
 
 ProtectedRoute.propTypes = {
   path: PropTypes.string.isRequired,
-  component: PropTypes.elementType.isRequired,
-  render: PropTypes.func.isRequired,
+  component: PropTypes.elementType,
+  render: PropTypes.func,
 };

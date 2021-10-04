@@ -1,6 +1,8 @@
 import User from "../models/User";
 import bcrypt from 'bcrypt';
+import passport from 'passport';
 import fetch from 'node-fetch';
+
 
 export const getJoin = (req, res) => {
   res.render('join', { pageTitle: 'Join' });
@@ -27,26 +29,34 @@ export const postJoin = async (req, res) => {
   }
 };
 export const getLogin = (req, res) => {
-  console.log(2, req.session);
-  return res.status(200).send({ msg: 'Login' })
-};
-export const postLogin = async (req, res) => {
-  console.log('logginstart')
-  const { email, password } = req.body;
-  const user = await User.findOne({ email, socialOnly: false });
-  if (!user) {
-    return res.status(400).send({ msg: '등록된 유저가 아닙니다' });
+  console.log('user', req.user);
+  if (req.user) {
+    return res.status(200).send({ msg: 'Login', isLoggedIn: true });
   }
-  const ok = await bcrypt.compare(password, user.password);
-  if (!ok) {
-    return res.status(400).send({ msg: '비밀번호가 틀렸습니다' });
-  }
-  req.session.loggedIn = true;
-  req.session.user = user;
-  console.log(1, req.session);
-  // console.log(2, res.cookies);  
-  return res.status(200).send({ msg: '로그인 성공', isLoggedIn: true });
+  return res.status(200).send({ msg: 'Login', isLoggedIn: false });
 };
+
+export const postLogin = (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error(err);
+      return next(err);
+    }
+    if (info) {
+      return res.status(401).send({ msg: info.reason });
+    }
+    return req.login(user, async (loginErr) => {
+      if (loginErr) {
+        console.error(loginErr);
+        return next(loginErr);
+      }
+      // res.setHeader에 쿠카기 들어감
+      // 서버에 통채로 들고있는건 세션
+      // 근데 모든 정보를 들고있으면 무거움
+      return res.status(200).send(user);
+    })
+  })(req, res, next);
+}
 
 export const startGithubLogin = (req, res) => {
   const cliendId = process.env.GITHUB_CLIENT;
@@ -140,7 +150,6 @@ export const postEdit = async (req, res) =>  {
 
 export const getChangePassword =  (req, res) => {
   if (req.session.user.socialOnly === true) {
-    req.flash('error', `Can't Change PAssword`);
     return res.redirect('/');
   }
   return res.render('users/change-password', {pageTitle: 'ChangePassword'})
@@ -164,7 +173,6 @@ export const postChangePassword =  async (req, res) => {
   user.password = newPassword;
   await user.save();
   req.session.user.password = user.password;
-  req.flash('info', 'Password Updated');
   return res.redirect('/users/logout');
 };
 
@@ -186,7 +194,8 @@ export const see = async (req, res) => {
 };
 
 export const logout = (req, res) =>  {
+  console.log('logouyt');
+  req.logout();
   req.session.destroy();
-  req.flash('info', 'ByeBye');
-  return res.status(302).redirect('/');
+  return res.status(200).send({ msg: '로그아웃이 성공적으로 이루어졌습니다', isLoggedIn: false });
 };

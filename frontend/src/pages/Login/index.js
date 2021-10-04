@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import { useForm } from "react-hook-form";
 import { black, white } from 'styles/color';
@@ -6,8 +7,8 @@ import { Container } from 'styles/common';
 import LoginForm from 'components/Login/LoginForm';
 import useInput from 'hooks/useInput';
 import { Button, Warning } from 'components/common';
-import axios from 'axios';
-import { useHistory } from 'react-router';
+import { useHistory, Redirect } from 'react-router';
+import AuthContext from 'context/AuthContext';
 
 const LoginContainer = styled(Container)`
   height: 100vh;
@@ -71,24 +72,20 @@ const SocialLoginButtonContainer = styled.div`
   }
 `;
 
-axios.defaults.baseURL = 'http://localhost:4000';
-axios.defaults.withCredentials = true;
-
 function Login() {
   const history = useHistory();
-  const [error, handleError, setError] = useInput(null);
+  const { setIsLoggedIn } = useContext(AuthContext);
+  const [error, _, setError] = useInput(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = ({ email, password }) => {
-    axios.post('apis/root/login',
-      { email, password }, 
-      // { withCredentials: true },
+    axios.post('/apis/root/login',
+      { email, password },
     )
       // eslint-disable-next-line consistent-return
-      .then(({ data, status }) => {
-        console.log(data);
-        if (status === 200) {
-          return history.push('/');
-        }
+      .then(({ data }) => {
+        const { isLoggedIn } = data;
+        setIsLoggedIn(isLoggedIn);
+        history.push('/');
       })
       .catch((e) => {
         const { msg } = e.response.data;

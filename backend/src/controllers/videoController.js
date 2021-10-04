@@ -26,7 +26,6 @@ export const getEdit = async (req, res) => {
     return res.render('404', { pageTitle: 'Video not found.' });
   }
   if (String(video.owner) !== String(_id)) {
-    req.flash('error', 'Not authrized');
     return res.status(403).redirect('/');
   }
   return res.render('edit', { pageTitle: `Editing`, video });
@@ -48,7 +47,6 @@ export const postEdit = async (req, res) => {
   if (String(updateddVideo.owner) !== String(_id)) {
     return res.status(403).redirect('/');
   }
-  req.flash('success', 'Change saved');
   return res.redirect(`/videos/${id}`);
 };
 

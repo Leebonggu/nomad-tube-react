@@ -8,13 +8,11 @@ router.get('/:id([0-9a-z]{24})', watch);
 
 router
   .route('/:id([0-9a-z]{24})/edit')
-  .all(protectorMiddleware)
   .get(getEdit)
   .post(postEdit)
 
 router
   .route('/:id([0-9a-z]{24})/delete')
-  .all(protectorMiddleware)
   .get(getDelete)
   
 router

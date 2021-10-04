@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Container } from 'styles/common';
 import VideoList from 'components/Video/VideoList';
+import AuthContext from 'context/AuthContext';
 
 const HomeContainer = styled(Container)`
   width: 100%;
@@ -11,16 +12,10 @@ const HomeContainer = styled(Container)`
   align-items: center;
 `;
 
-const loginTest = async () => {
-  const result = await axios.get('/apis/root/login');
-  console.log(result);
-}
-
 function Home() {
   const [videos, setVideos] = useState([]);
   const [error, setError] = useState([]);
   useEffect(() => {
-    loginTest();
     axios.get('/apis/root')
       .then(({ data }) => {
         setVideos(data);
@@ -28,7 +23,8 @@ function Home() {
       .catch((e) => {
         setError(e);
       });
-  }, [])
+  }, []);
+
   return (
     <HomeContainer>
       <VideoList videos={videos}/>

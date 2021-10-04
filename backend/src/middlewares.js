@@ -2,17 +2,16 @@ import multer from "multer";
 
 export const localMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
-  res.locals.siteName = "Wetube";
   res.locals.loggedInUser = req.session.user || {};
+  res.locals.user = req.user || {};
   next();
 };
 
 export const protectorMiddleware  = (req, res, next) => {
-  if (req.session.loggedIn) {
+  if (req.user) {
     next();
   } else {
-    req.flash('error', 'Login First');
-    return res.redirect('/login');
+    return res.status(400).send({ msg: '로그인된 유저가 아닙니다', isLoggedIn: false });
   }
 };
 
@@ -20,7 +19,6 @@ export const publicOnlyMiddleware =  (req, res, next) => {
   if (!req.session.loggedIn) {
     next();
   } else {
-    req.flash('error', 'Not authroized');
     return res.redirect('/');
   }
 };

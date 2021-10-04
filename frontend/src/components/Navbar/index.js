@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { background, red, white, black } from 'styles/color';
 import { Container } from 'styles/common';
 import { Button } from 'components/common';
+import AuthContext from 'context/AuthContext';
 
 
 const Nav = styled.nav`
@@ -96,10 +98,19 @@ const NavMenuItem = styled.li`
 
 function Navbar() {
   const [openHamburger, setOpenHamburger] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
   const  handleOpenHamburger =  useCallback(() => {
     setOpenHamburger(prev => !prev);
   },[]);
+
+  const Logout = useCallback(() => {
+    axios.get('/apis/users/logout')
+      .then(d => {
+        console.log(d);
+        setIsLoggedIn(false);
+      });
+  }, []);
   return (
     <Nav>
       <NavContainer>
@@ -111,22 +122,32 @@ function Navbar() {
           <NavMenuItem>
             <Link to="/search">SEARCH</Link>
           </NavMenuItem>
-          <NavMenuItem>
-            <Link to="/upload">UPLOAD</Link>
-          </NavMenuItem>
-          <NavMenuItem>
-            <Link to="/profile">PROFILE</Link>
-          </NavMenuItem>
-          <NavMenuItem>
-            <Link to="/login">LOGIN</Link>
-          </NavMenuItem>
-          <NavMenuItem>
-            <Link to="/signup">
-              <Button>
-                SINGUP
-              </Button>
-            </Link>
-          </NavMenuItem>
+          {isLoggedIn ? (
+            <>
+              <NavMenuItem>
+                <Link to="/upload">UPLOAD</Link>
+              </NavMenuItem>
+              <NavMenuItem>
+                <Link to="/profile">PROFILE</Link>
+              </NavMenuItem>
+              <NavMenuItem onClick={Logout}>
+                LOGOUT
+              </NavMenuItem>
+            </>
+          ) : (
+            <>
+              <NavMenuItem>
+                <Link to="/login">LOGIN</Link>
+              </NavMenuItem>
+              <NavMenuItem>
+                <Link to="/signup">
+                  <Button>
+                    SINGUP
+                  </Button>
+                </Link>
+              </NavMenuItem>
+            </>
+          )}
         </NavMenu>
       </NavContainer>
     </Nav>

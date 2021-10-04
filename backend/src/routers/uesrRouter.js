@@ -7,11 +7,9 @@ const router = express.Router();
 router.get('/logout', protectorMiddleware, logout);
 router
 .route('/edit')
-  .all(protectorMiddleware)
   .get(getEdit)
   .post(avatarUpload.single('avatar'), postEdit);
 router.route('/change-password')
-  .all(protectorMiddleware)
   .get(getChangePassword)
   .post(postChangePassword);
 router.get('/github/start', publicOnlyMiddleware, startGithubLogin);
