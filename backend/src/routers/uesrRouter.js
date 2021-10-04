@@ -12,8 +12,8 @@ router
 router.route('/change-password')
   .get(getChangePassword)
   .post(postChangePassword);
-router.get('/github/start', publicOnlyMiddleware, startGithubLogin);
-router.get('/github/finish', publicOnlyMiddleware, finishGithubLogin);
+router.get('/github/start', startGithubLogin);
+router.get('/github/finish', finishGithubLogin);
 router.get('/delete', remove);
 router.get('/:id', profile);
 

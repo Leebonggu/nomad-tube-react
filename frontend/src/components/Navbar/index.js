@@ -108,10 +108,11 @@ function Navbar() {
   const Logout = useCallback(() => {
     axios.get('/apis/users/logout')
       .then(() => {
+        setIsLoggedIn(false);
         history.push('/');
       });
   }, []);
-  console.log('userId', userId)
+  
   return (
     <Nav>
       <NavContainer>

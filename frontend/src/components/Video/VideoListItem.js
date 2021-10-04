@@ -14,18 +14,19 @@ const VideoListItemContainer = styled(Link)`
   width: 240px;
   /* max-width: 240px; */
   height: 200px;
-  background-color: pink;
   border-radius: 10px;
+  border: 1px solid gray;
 
   @media screen and (max-width: 768px) {
-    background-color: yellow;
-    min-width: 100%;
+    width: 90%;
+    min-width: 240px;
     /* height: 300px; */
   }
 `;
 
 const Thumbnail = styled.div`
   flex: 3;
+  border-bottom: 1px solid gray;
 `;
 const Info = styled.div`
   flex: 1;
@@ -34,8 +35,8 @@ const Info = styled.div`
 function VideoListItem({ video }) {
   return (
     <VideoListItemContainer to={`/watch/${video._id}`}>
-      <Thumbnail>1</Thumbnail>
-      <Info>2</Info>
+      <Thumbnail>{video.title}</Thumbnail>
+      <Info>{video.description}</Info>
     </VideoListItemContainer>
   )
 }

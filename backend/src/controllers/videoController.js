@@ -58,18 +58,18 @@ export const getUpload = (req, res) => {
 
 export const postUpload = async (req, res) => {
   console.log('업로드 시작');
-  console.log(req.body);
-  console.log(req.file);
-  console.log(req.user);
+  // console.log(req.body);
+  // console.log(req.file);
+  // console.log(req.user);
   const { _id } = req.user;
-  const { path: fileUrl } = req.file;
+  const { path: fileUrl, location } = req.file;
   const { title, description, hashtags } = req.body;
   console.log(fileUrl, title, description, hashtags)
   try {
     const newVideo = await Video.create({
       title,
       description,
-      fileUrl,
+      fileUrl: fileUrl ? fileUrl : location,
       owner: _id,
       hashtags: Video.formatHashtags(hashtags)
     });
@@ -84,19 +84,20 @@ export const postUpload = async (req, res) => {
 };
 
 export const getDelete = async (req, res) => {
+  console.log('delete video')
   const { id } = req.params;
-  const { user : { _id }} = req.session;
+  const { _id } = req.user;
   const video = await Video.findById(id);
   if (!video) {
     return res.status(404).render('404', { pageTitle: 'Video not found.' });
   }
   if (String(video.owner) !== String(_id)) {
     console.log('inner');
-    return res.status(403).redirect('/');
+    return res.status(403).send({ msg: '실패' })
   }
 
   await Video.findByIdAndDelete(id);
-  return res.redirect('/');
+  return res.status(200).send({ msg: '성공' })
 };
 
 export const search = async (req, res) => {

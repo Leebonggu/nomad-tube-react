@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { Container } from 'styles/common';
 import UploadForm from 'components/Upload/UploadForm';
+import LoadingSpinner from 'common/loadingSpinner';
 
 
 const UploadContainer = styled(Container)`
@@ -30,19 +31,26 @@ const SignupContents = styled.div`
 
 function Upload() {
   const histroy = useHistory();
+  const [loading, setLoading] = useState(false);
+
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = ({ title, file, description, hashtags }) => {
+    setLoading(true);
     const formData = new FormData();
     formData.append('video', file[0]);
     formData.append('title', title);
     formData.append('description', description);
     formData.append('hashtags', hashtags);
     axios.post('/apis/videos/upload', formData)
-    .then(({ data }) => histroy.push(`/profile/${data.userId}`))
+      .then(({ data }) => {
+      setLoading(false);
+        histroy.push(`/profile/${data.userId}`)
+      })
     .catch(e => console.log(e));
   };
   return (
     <UploadContainer>
+      {loading && <LoadingSpinner />}
       <SignupContents>
         <UploadForm
           register={register}

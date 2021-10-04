@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useForm } from "react-hook-form";
@@ -94,7 +94,13 @@ function Login() {
   };
 
   const handleGithubLogin = () => {
-    // axios.get('/')
+    axios.get('/apis/users/github/start')
+      .then(({ data }) => {
+        const { isLoggedIn, userId } = data;
+        setIsLoggedIn(isLoggedIn);
+        setUserId(userId)
+        history.push('/');
+      });
   }
 
   return (
@@ -110,12 +116,12 @@ function Login() {
         />
         {error && <Warning>{error}</Warning>}
         </InputContainer>
-        <SocialLoginContainer>
+        {/* <SocialLoginContainer>
           <SocialLoginText>소셜로그인</SocialLoginText>
           <SocialLoginButtonContainer>
             <Button big onClick={handleGithubLogin}>GITHUB</Button>
           </SocialLoginButtonContainer>
-        </SocialLoginContainer>
+        </SocialLoginContainer> */}
       </LoginContents>
     </LoginContainer>
   );

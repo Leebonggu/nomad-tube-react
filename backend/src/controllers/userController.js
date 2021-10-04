@@ -29,6 +29,7 @@ export const postJoin = async (req, res) => {
   }
 };
 export const getLogin = (req, res) => {
+  console.log(req.user);
   if (req.user) {
     return res.status(200).send({ msg: 'Login', isLoggedIn: true, userId: req.user._id });
   }
@@ -58,7 +59,9 @@ export const postLogin = (req, res, next) => {
 }
 
 export const startGithubLogin = (req, res) => {
+  console.log('start');
   const cliendId = process.env.GITHUB_CLIENT;
+  console.log(cliendId);
   const config = {
     client_id: cliendId,
     allow_signui: false,
@@ -117,9 +120,8 @@ export const finishGithubLogin = async (req, res) => {
       });
     }
     // create Account
-    req.session.loggedIn = true;
-    req.session.user = user;
-    return res.status(302).redirect('/');
+    req.user = user;
+    return res.status(200).send({ isLoggedIn: true, userId: user._id })
 } else {
     return res.redirect('/login');
   }
@@ -141,7 +143,7 @@ export const postEdit = async (req, res) =>  {
     username,
     location,
   }, { new: true });
-  req.session.user = updatedUser;
+  req.user = updatedUser;
   // 이미 있는 경우, 업데이트를 넘겨줌
   return res.redirect('/users/edit')
   // return res.render('edit-profile', { pageTitle: 'Edit Profile'})
