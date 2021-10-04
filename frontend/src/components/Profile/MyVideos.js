@@ -20,8 +20,8 @@ const MyVideosContainer = styled.div`
 function MyVideos({ videos }) {
   return (
     <MyVideosContainer>
-      {!videos.length ? (
-        <VideoList />
+      {videos.length ? (
+        <VideoList videos={videos}/>
       ) : (
         <div className="empty">내가 업로드한 비디오가 없습니다.</div>
       )}
@@ -35,6 +35,10 @@ MyVideos.propTypes = {
   videos: PropTypes.oneOfType([
     () => null,
     PropTypes.object
-  ]).isRequired
-}
+  ])
+};
+
+MyVideos.defaultProps = {
+  videos: [],
+};
 

@@ -9,13 +9,15 @@ export const home = async (req, res) => {
 };
 
 export const watch = async (req, res) => {
+  // console.log(req);
   const { id } = req.params;
-  const video = await Video.findById(id).populate('owner').populate('comments');
+  console.log(id);
+  const video = await Video.findById({ _id: id }).populate('owner').populate('comments');
   console.log(video);
   if (!video) {
-    return res.status(404).render('404', { pageTitle: 'Video not found.' });
+    return res.status(404).send({ msg: '비디오가 없습니다', video: [] });
   }
-  return res.render('watch', { pageTitle: video.title, video });
+  return res.status(200).send({ msg: '비디오를 불러왔습니다.', video });
 };
 
 export const getEdit = async (req, res) => {
@@ -55,26 +57,29 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
+  console.log('업로드 시작');
   console.log(req.body);
   console.log(req.file);
-  // const { user: { _id } } = req.session;
+  console.log(req.user);
+  const { _id } = req.user;
   const { path: fileUrl } = req.file;
   const { title, description, hashtags } = req.body;
+  console.log(fileUrl, title, description, hashtags)
   try {
-  //   const newVideo = await Video.create({
-  //     title,
-  //     description,
-  //     fileUrl,
-  //     owner: _id,
-  //     hashtags: Video.formatHashtags(hashtags)
-  //   });
-  //   const user = await User.findById(_id);
-  //   user.videos.push(newVideo._id);
-  //   user.save();
-    return res.redirect(`/`);
+    const newVideo = await Video.create({
+      title,
+      description,
+      fileUrl,
+      owner: _id,
+      hashtags: Video.formatHashtags(hashtags)
+    });
+    const user = await User.findById(_id);
+    user.videos.push(newVideo._id);
+    user.save();
+    return res.status(201).send({ msg: '업로드 완료', userId: _id });
   } catch (error) {
     console.log(error);
-    return  res.status(400).render('upload', { pageTitle: `Upload Video`, errorMessage: error._message})
+    return  res.status(400).send({ msg: error._message });
   }
 };
 
@@ -96,6 +101,7 @@ export const getDelete = async (req, res) => {
 
 export const search = async (req, res) => {
   const { keyword } = req.query;
+  console.log(keyword);
   let videos = [];
   if (keyword) {
     videos = await Video.find({
@@ -104,7 +110,7 @@ export const search = async (req, res) => {
       },
     }).populate("owner");
   }
-  return res.render('search', { pageTitle: 'Search', videos });
+  return res.status(200).send({ videos, msg: '성공' });
 };
 
 export const registerView = async (req, res) => {

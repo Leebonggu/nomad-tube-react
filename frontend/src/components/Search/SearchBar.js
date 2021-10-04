@@ -1,10 +1,11 @@
-import { Button } from 'components/common';
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { Button } from 'components/common';
 
 const SearchBarContainer = styled.form`
-  flex: 1;
-  /* margin: 3rem 0; */
+  width: 100%;
+  margin: 3rem 0;
   display: flex;
 `;
 
@@ -26,15 +27,25 @@ const Input = styled.input`
   }
 `;
 
-function SearchBar() {
+function SearchBar({ searchTerms, handleSearchTerms, handleSearch }) {
   return (
     <SearchBarContainer>
       <InputContainer>
-        <Input />
-        <Button>검색</Button>
+        <Input value={searchTerms} onChange={handleSearchTerms} />
+        <Button onClick={handleSearch}>검색</Button>
       </InputContainer>
     </SearchBarContainer>
   )
 }
 
 export default SearchBar;
+
+SearchBar.propTypes = {
+  handleSearchTerms: PropTypes.func.isRequired,
+  handleSearch: PropTypes.func.isRequired,
+  searchTerms: PropTypes.string,
+};
+
+SearchBar.defaultProps = {
+  searchTerms: '',
+};

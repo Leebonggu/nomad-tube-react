@@ -4,13 +4,12 @@ import { protectorMiddleware, videoUpload } from '../middlewares';
 
 const router = express.Router();
 
-router.get('/:id([0-9a-z]{24})', watch);
+router.get('/:id', watch);
 
 router
   .route('/:id([0-9a-z]{24})/edit')
   .get(getEdit)
   .post(postEdit)
-
 router
   .route('/:id([0-9a-z]{24})/delete')
   .get(getDelete)

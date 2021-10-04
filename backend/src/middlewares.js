@@ -16,10 +16,10 @@ export const protectorMiddleware  = (req, res, next) => {
 };
 
 export const publicOnlyMiddleware =  (req, res, next) => {
-  if (!req.session.loggedIn) {
+  if (!req.user) {
     next();
   } else {
-    return res.redirect('/');
+    return res.status(400).send({ msg: '이미 로그인 되어 있습니다', isLoggedIn: true });
   }
 };
 

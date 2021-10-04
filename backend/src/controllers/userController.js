@@ -29,9 +29,8 @@ export const postJoin = async (req, res) => {
   }
 };
 export const getLogin = (req, res) => {
-  console.log('user', req.user);
   if (req.user) {
-    return res.status(200).send({ msg: 'Login', isLoggedIn: true });
+    return res.status(200).send({ msg: 'Login', isLoggedIn: true, userId: req.user._id });
   }
   return res.status(200).send({ msg: 'Login', isLoggedIn: false });
 };
@@ -53,7 +52,7 @@ export const postLogin = (req, res, next) => {
       // res.setHeader에 쿠카기 들어감
       // 서버에 통채로 들고있는건 세션
       // 근데 모든 정보를 들고있으면 무거움
-      return res.status(200).send(user);
+      return res.status(200).send({ isLoggedIn: true, userId: user._id });
     })
   })(req, res, next);
 }
@@ -178,9 +177,9 @@ export const postChangePassword =  async (req, res) => {
 
 export const remove = (req, res) =>  res.send('/remove');
 
-export const see = async (req, res) => {
+export const profile = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id).populate('videos').populate({
+  const user = await User.findById({_id: id}).populate('videos').populate({
     path: "videos",
     populate: {
       path: "owner",
@@ -188,9 +187,14 @@ export const see = async (req, res) => {
     },
   });
   if (!user) {
-    return res.status(404).render('404', { pageTitle: 'User Not Found' });
+    return res.status(400).send({ msg: '등록되지 않은 유져입니다'});
   }
-  return res.render('users/profile', { pageTitle: `User Profile: ${user.name}`, user });
+  const profileData = {
+    userId: user._id,
+    videos: user.videos,
+    avatarUrl: user.avatarUrl ?  user.avatarUrl : '',
+  };
+  return res.status(200).send({ msg: '유자 업로드 비디오', profileData });
 };
 
 export const logout = (req, res) =>  {

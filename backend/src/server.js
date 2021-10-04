@@ -12,16 +12,8 @@ import passportConfig from './passport';
 const app = express();
 const logger = morgan('dev');
 
-// const corsOptions = {
-//   origin: true,
-//   credentials : true,
-//   optionsSuccessStatus: 200 // 응답 상태 200으로 설정 
-// };/
-
-// app.set('view engine', 'pug');
-app.set('views', process.cwd() + '/src/views');
-app.use('/uploads', express.static('uploads'));
 passportConfig();
+app.use('/uploads', express.static('uploads'));
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
@@ -35,7 +27,7 @@ app.use(session({
   secret: process.env.COOKIE_SECRET,
   resave: false,
   saveUninitialized: false,
-  // store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
 }));
 app.use(passport.initialize());
 app.use(passport.session());

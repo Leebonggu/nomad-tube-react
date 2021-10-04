@@ -2,7 +2,7 @@ import React, { useState, useCallback, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { background, red, white, black } from 'styles/color';
 import { Container } from 'styles/common';
 import { Button } from 'components/common';
@@ -97,8 +97,9 @@ const NavMenuItem = styled.li`
 `;
 
 function Navbar() {
+  const history = useHistory();
   const [openHamburger, setOpenHamburger] = useState(false);
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, userId } = useContext(AuthContext);
 
   const  handleOpenHamburger =  useCallback(() => {
     setOpenHamburger(prev => !prev);
@@ -106,11 +107,11 @@ function Navbar() {
 
   const Logout = useCallback(() => {
     axios.get('/apis/users/logout')
-      .then(d => {
-        console.log(d);
-        setIsLoggedIn(false);
+      .then(() => {
+        history.push('/');
       });
   }, []);
+  console.log('userId', userId)
   return (
     <Nav>
       <NavContainer>
@@ -128,7 +129,7 @@ function Navbar() {
                 <Link to="/upload">UPLOAD</Link>
               </NavMenuItem>
               <NavMenuItem>
-                <Link to="/profile">PROFILE</Link>
+                <Link to={`/profile/${userId}`}>PROFILE</Link>
               </NavMenuItem>
               <NavMenuItem onClick={Logout}>
                 LOGOUT

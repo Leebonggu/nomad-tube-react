@@ -74,17 +74,16 @@ const SocialLoginButtonContainer = styled.div`
 
 function Login() {
   const history = useHistory();
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn, setUserId } = useContext(AuthContext);
   const [error, _, setError] = useInput(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = ({ email, password }) => {
-    axios.post('/apis/root/login',
-      { email, password },
-    )
+    axios.post('/apis/root/login',{ email, password })
       // eslint-disable-next-line consistent-return
       .then(({ data }) => {
-        const { isLoggedIn } = data;
+        const { isLoggedIn, userId } = data;
         setIsLoggedIn(isLoggedIn);
+        setUserId(userId)
         history.push('/');
       })
       .catch((e) => {

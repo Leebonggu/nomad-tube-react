@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useForm } from 'react-hook-form';
 import { Container } from 'styles/common';
 import UploadForm from 'components/Upload/UploadForm';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
+
 
 const UploadContainer = styled(Container)`
   height: 100vh;
@@ -27,15 +29,16 @@ const SignupContents = styled.div`
 `;
 
 function Upload() {
+  const histroy = useHistory();
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = ({ title, file, description, hashtag }) => {
+  const onSubmit = ({ title, file, description, hashtags }) => {
     const formData = new FormData();
     formData.append('video', file[0]);
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('hashtag', hashtag);
+    formData.append('hashtags', hashtags);
     axios.post('/apis/videos/upload', formData)
-    .then((d) => console.log(d))
+    .then(({ data }) => histroy.push(`/profile/${data.userId}`))
     .catch(e => console.log(e));
   };
   return (

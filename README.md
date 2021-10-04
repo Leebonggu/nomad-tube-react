@@ -15,6 +15,20 @@
 
 ## Front
 
+### 절대경로
+
+- 상대경로 쓰기 귀찮아서 절대경로로 만듬
+
+```json
+// jsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": "src"
+  },
+  "include": ["src"]
+}
+```
+
 ### box-sizing: border-box;
 - width 100% 임에도 오른쪽 여백이 남음
 - box-sizing: border-box;로 해결

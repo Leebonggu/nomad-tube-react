@@ -4,22 +4,23 @@ import styled from 'styled-components';
 import VideoList from 'components/Video/VideoList';
 
 const SearchResultContainer = styled.div`
-  flex: 3;
   width: 100%;
   display: flex;
   justify-content: flex-start;
+  height: 80vh;
 
   .empty {
-    /* height: 100vh; */
   }
 `;
 
 
 function SearchResult({ videos }) {
+  console.log('videos', videos);
+  console.log('videos', videos.length);
   return (
     <SearchResultContainer>
       {videos.length ? (
-        <VideoList />
+        <VideoList videos={videos}/>
       ) : (
       <div className="empty">결과가 없습니다</div>
       )}
@@ -32,6 +33,6 @@ export default SearchResult;
 SearchResult.propTypes = {
   videos: PropTypes.oneOfType([
     () => null,
-    PropTypes.object
+    PropTypes.array
   ]).isRequired
 }

@@ -44,7 +44,7 @@ function UploadForm({
       <Input type="text" {...register('description', { required: true })} placeholder="비디오 설명을 써주세요" />
       {errors.description && <Warning>description is required</Warning>}
       <Label>헤쉬태그</Label>
-      <Input type="text" {...register('hashtag')} placeholder="콤마로 구분합니다" />
+      <Input type="text" {...register('hashtags')} placeholder="콤마로 구분합니다" />
       <Button type="submit">업로드</Button>
     </UploadFormContainer>
   );

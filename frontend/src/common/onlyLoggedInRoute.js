@@ -8,7 +8,6 @@ import AuthContext from 'context/AuthContext';
 
 
 function ProtectedRoute({ path, component: Component, render, ...rest }) {
-  
   const { isLoggedIn } = useContext(AuthContext);
   return (
     <Route 
