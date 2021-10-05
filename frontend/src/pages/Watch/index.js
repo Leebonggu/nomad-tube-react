@@ -8,15 +8,16 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import AuthContext from 'context/AuthContext';
 import { Button } from 'components/common';
+import useInput from 'hooks/useInput';
+import CommentForm from 'components/Comment/CommentForm';
+import CommentList from 'components/Comment/CommentList';
 
 const WatchContainer = styled.div`
-width: 100%;  
-  height: 100%;
+  width: 100%;  
+  /* height: 100%; */
   display: flex;
   justify-content: center;
-  @media screen and (max-width: 768px) {
-    height: 80vh;
-  }
+  flex-direction: column;
 `;
 const WatchContents = styled.div`
   display: flex;
@@ -51,6 +52,15 @@ const WatchContents = styled.div`
   }
 `;
 
+const CommentContainer = styled.div`
+  height: 20rem;
+  display: flex;
+  flex-direction: column;
+  @media screen and (max-width: 768px) {
+    height: 15rem;
+  }
+`;
+
 const DateSpliter = (date) => {
   const splited = date.split('T');
   return `${splited[0]} ${splited[1].slice(0, -5)}`;
@@ -59,40 +69,82 @@ const DateSpliter = (date) => {
 function Watch() {
   const history = useHistory();
   const { id } = useParams();
-  const [currentVideo, setCurrentVideo] = useState(null);
   const { userId } = useContext(AuthContext);
+  const [currentVideo, setCurrentVideo] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [text, handleText] = useInput('');
+
   useEffect(() => {
     axios.get(`/apis/videos/${id}`)
       .then(({ data }) => {
         const { video } = data;
-        setCurrentVideo(video)
+        setCurrentVideo(video);
+        setComments(video.comments);
       })
       .catch((err) => console.log(err));
   }, [id]);
 
-  const handleDlelete = () => {
+  const handleDelteVideo = () => {
     axios.get(`/apis/videos/${id}/delete`)
       .then(({ data }) => history.push('/'))
       .catch((err) => console.log(err));
-  }
+  };
+
+  const handleSubmitComment = (e) => {
+    e.preventDefault();
+    if (text) {
+      axios.post(`/apis/common/videos/${id}/comment`, { text })
+        .then(({ data }) => {
+          const { newComment } = data;
+          setComments([newComment, ...comments ])
+        })
+        .catch((err) => console.log(err.response))
+    } else {
+      alert('댓글을 입력해야합니다');
+    }
+  };
+
+  const handleDeleteComment = (commentId) => {
+    axios.delete(`/apis/common/videos/${id}/comment`, { data: { commentId } })
+      .then(({ data }) => {
+        const { video } = data;
+        setComments([ ...video.comments ]);
+      })
+      .then((err) => console.log(err.response));
+  };
+
   return (
     <WatchContainer>
       {currentVideo && (
-        <WatchContents>
-          <h1 className="title">{currentVideo.title}</h1>
-          <Button onClick={history.goBack}>뒤로</Button>
-          <video
-            src={currentVideo.fileUrl}
-            controls
-          />
-          <div className="info">
-            <h5 className="create">{DateSpliter(currentVideo.createdAt)}</h5>
-            <h3 className="description">{currentVideo.description}</h3>
-            <div className="hashtag">{currentVideo.hashtags}</div>
-            <h4 className="owner">{currentVideo.owner.email}</h4>
-            {userId === currentVideo.owner._id && <Button onClick={handleDlelete}>삭제</Button>}
-          </div>
-        </WatchContents>
+        <>
+          <WatchContents>
+            <h1 className="title">{currentVideo.title}</h1>
+            <Button onClick={history.goBack}>뒤로</Button>
+            <video
+              src={currentVideo.fileUrl}
+              controls
+            />
+            <div className="info">
+              <h5 className="create">{DateSpliter(currentVideo.createdAt)}</h5>
+              <h3 className="description">{currentVideo.description}</h3>
+              <div className="hashtag">{currentVideo.hashtags}</div>
+              <h4 className="owner">{currentVideo.owner.email}</h4>
+              {userId === currentVideo.owner._id && <Button onClick={handleDelteVideo}>삭제</Button>}
+            </div>
+          </WatchContents>
+          <CommentContainer>
+            <CommentForm 
+              comment={text}
+              handleComment={handleText}
+              handleSubmitComment={handleSubmitComment}
+            />
+            <CommentList
+              comments={comments}
+              handleDeleteComment={handleDeleteComment}
+              userId={userId}
+            />
+          </CommentContainer>
+        </>
       )}
     </WatchContainer>
   )

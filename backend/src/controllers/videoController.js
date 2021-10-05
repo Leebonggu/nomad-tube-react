@@ -11,9 +11,7 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   // console.log(req);
   const { id } = req.params;
-  console.log(id);
   const video = await Video.findById({ _id: id }).populate('owner').populate('comments');
-  console.log(video);
   if (!video) {
     return res.status(404).send({ msg: '비디오가 없습니다', video: [] });
   }
@@ -54,13 +52,9 @@ export const postEdit = async (req, res) => {
 
 export const postUpload = async (req, res) => {
   console.log('업로드 시작');
-  // console.log(req.body);
-  // console.log(req.file);
-  // console.log(req.user);
   const { _id } = req.user;
   const { path: fileUrl, location } = req.file;
   const { title, description, hashtags } = req.body;
-  console.log(fileUrl, title, description, hashtags)
   try {
     const newVideo = await Video.create({
       title,

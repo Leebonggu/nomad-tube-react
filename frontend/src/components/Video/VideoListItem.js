@@ -3,20 +3,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { red, white } from 'styles/color';
 
 const VideoListItemContainer = styled(Link)`
   /* flex: 1; */
   /* display: flex; */
   display: flex;
   flex-direction: column;
-  padding: 1rem;
   margin: 1rem;
   width: 240px;
   /* max-width: 240px; */
   height: 200px;
   border-radius: 10px;
-  border: 1px solid gray;
 
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
   @media screen and (max-width: 768px) {
     width: 90%;
     min-width: 240px;
@@ -25,11 +28,17 @@ const VideoListItemContainer = styled(Link)`
 `;
 
 const Thumbnail = styled.div`
+  border-radius: 10px 10px 0 0;
   flex: 3;
-  border-bottom: 1px solid gray;
+  display: flex;
+  font-weight: 800;
+  justify-content: center;
+  align-items: center;
 `;
 const Info = styled.div`
+  border-radius: 0 0 10px 10px;
   flex: 1;
+  padding: 1rem;
 `;
 
 function VideoListItem({ video }) {

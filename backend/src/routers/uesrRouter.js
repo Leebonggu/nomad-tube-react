@@ -4,15 +4,17 @@ import { protectorMiddleware, publicOnlyMiddleware, avatarUpload } from '../midd
 
 const router = express.Router();
 
-router.get('/logout', protectorMiddleware, logout);
+router.get('/logout', logout);
 router
 .route('/edit')
   .get(getEdit)
   .post(avatarUpload.single('avatar'), postEdit);
+
 router.route('/change-password')
   .post(postChangePassword);
-router.get('/github/start', startGithubLogin);
-router.get('/github/finish', finishGithubLogin);
+
+// router.get('/github/start', startGithubLogin);
+// router.get('/github/finish', finishGithubLogin);
 router.get('/delete', remove);
 router.get('/:id', profile);
 

@@ -58,6 +58,7 @@ app.use(cors({
 axios.default.withCredentials = true;
 ```
 
-## login 유지
+## CommentRouter
 
-- contextAPI를 통해, 전역적으로 뿌려줌
+- 코멘트 기능
+- 코멘트 삭제 기능 추가

@@ -6,7 +6,6 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
 import apis from './routers';
-import { localMiddleware } from './middlewares';
 import passportConfig from './passport';
 
 const app = express();
@@ -31,7 +30,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use(localMiddleware);
 app.use('/apis', apis);
 
 export default app;
