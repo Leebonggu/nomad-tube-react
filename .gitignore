@@ -2,3 +2,5 @@
 */.env
 */uploads
 .DS_Store
+*/.build
+nomad-tube-react.pem
