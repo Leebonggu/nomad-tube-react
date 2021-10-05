@@ -6,7 +6,6 @@ import local from './passport-local';
 const passportConfig = () => {
   passport.serializeUser((user, done) => {
     console.log('SerializeUser');
-    console.log(user);
     done(null, user._id);
   });
   passport.deserializeUser(async (id, done) => {

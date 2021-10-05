@@ -1,5 +1,5 @@
 import express from 'express';
-import { getDelete, getEdit, getUpload, postEdit, postUpload, watch } from '../controllers/videoController';
+import { getDelete, getEdit, postEdit, postUpload, watch } from '../controllers/videoController';
 import { protectorMiddleware, videoUpload } from '../middlewares';
 
 const router = express.Router();
@@ -16,7 +16,6 @@ router
   
 router
   .route('/upload')
-  .get(getUpload)
   .post(videoUpload.single('video'), postUpload)
   // .all(protectorMiddleware)
 

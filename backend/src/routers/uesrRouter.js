@@ -10,7 +10,6 @@ router
   .get(getEdit)
   .post(avatarUpload.single('avatar'), postEdit);
 router.route('/change-password')
-  .get(getChangePassword)
   .post(postChangePassword);
 router.get('/github/start', startGithubLogin);
 router.get('/github/finish', finishGithubLogin);

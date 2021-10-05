@@ -1,12 +1,8 @@
-import User from "../models/User";
 import bcrypt from 'bcrypt';
 import passport from 'passport';
+import User from '../models/User';
 import fetch from 'node-fetch';
 
-
-export const getJoin = (req, res) => {
-  res.render('join', { pageTitle: 'Join' });
-};
 export const postJoin = async (req, res) => {
   const { email, password, passwordConfirm, location } = req.body;
   if (password !== passwordConfirm) {
@@ -25,11 +21,11 @@ export const postJoin = async (req, res) => {
     return res.status(200).send({ msg: '회원가입 성공' });
   } catch (error) {
     console.log(error);
-    return res.status(400).send("비밀번호가 다릅니다");
+    return res.status(400).send({ msg: '비밀번호가 다릅니다' });
   }
 };
+
 export const getLogin = (req, res) => {
-  console.log(req.user);
   if (req.user) {
     return res.status(200).send({ msg: 'Login', isLoggedIn: true, userId: req.user._id });
   }
@@ -59,9 +55,7 @@ export const postLogin = (req, res, next) => {
 }
 
 export const startGithubLogin = (req, res) => {
-  console.log('start');
   const cliendId = process.env.GITHUB_CLIENT;
-  console.log(cliendId);
   const config = {
     client_id: cliendId,
     allow_signui: false,
@@ -112,7 +106,7 @@ export const finishGithubLogin = async (req, res) => {
       user = await User.create({
         name: userData.name,
         avatarUrl: userData.avatar_url,
-        username: userData.login,
+        // username: userData.login,
         email: emailObj.email,
         password: '',
         socialOnly: true,
@@ -127,54 +121,50 @@ export const finishGithubLogin = async (req, res) => {
   }
 };
 
-export const getEdit = (req, res) =>  {
-  return res.render('edit-profile', { pageTitle: 'Edit Profile' })
+export const getEdit = async (req, res) =>  {
+  const { _id } = req.user;
+  const user = await User.findById({ _id });
+  const data = { location: user.location, avatarUrl: user.avatarUrl ? user.avatarUrl : ''};
+  return res.status(200).send({ msg: '성공', user: data });
 };
 
 export const postEdit = async (req, res) =>  {
-  const { user: { _id: id, avatarUrl } } = req.session;
-  const { name, email, username, location } = req.body;
+  const {_id: id, avatarUrl } = req.user;
+  const { location } = req.body;
   const { file } = req;
   
   const updatedUser = await User.findByIdAndUpdate(id, {
-    avatarUrl: file ? file.path : avatarUrl,
-    name,
-    email,
-    username,
+    avatarUrl: file ? file.location : avatarUrl,
     location,
   }, { new: true });
   req.user = updatedUser;
   // 이미 있는 경우, 업데이트를 넘겨줌
-  return res.redirect('/users/edit')
-  // return res.render('edit-profile', { pageTitle: 'Edit Profile'})
-};
-
-export const getChangePassword =  (req, res) => {
-  if (req.session.user.socialOnly === true) {
-    return res.redirect('/');
-  }
-  return res.render('users/change-password', {pageTitle: 'ChangePassword'})
+  const data = { location: updatedUser.location, avatarUrl: updatedUser.avatarUrl ? updatedUser.avatarUrl : ''};
+  return res.status(200).send({ msg: '성공', updatedUser: data });
 };
 
 export const postChangePassword =  async (req, res) => {
-  const { user: { _id: id } } = req.session;
+  const { _id: id } = req.user;
   const {
     oldPassword,
     newPassword,
-    newPasswordConfirmation,
+    newPasswordConfirm,
   } = req.body;
-  const ok = await bcrypt.compare(oldPassword, user.password);
+  const ok = await bcrypt.compare(oldPassword, req.user.password);
   if (!ok) {
-    return res.status(400).render('users/change-password', {pageTitle: 'ChangePassword', errorMessage: '기존 비밀번호가 틀림'})
+    return res.status(400).send({ msg: '기존 비빌번호가 틀림' });
   }
-  if (newPassword !== newPasswordConfirmation) {
-    return res.status(400).render('users/change-password', {pageTitle: 'ChangePassword', errorMessage: '새 비밀번호가 틀림'})
+  if (newPassword !== newPasswordConfirm) {
+    return res.status(400).send({ msg: '새 비밀번호가 틀림' });
   }
-  const user = await User.findById(id);
+  const user = await User.findById({ _id: id });
   user.password = newPassword;
   await user.save();
-  req.session.user.password = user.password;
-  return res.redirect('/users/logout');
+  req.user.password = user.password;
+  req.logout();
+  req.session.destroy();
+  
+  return res.status(200).send({ msg: '패스워드변경완료' });
 };
 
 export const remove = (req, res) =>  res.send('/remove');
@@ -182,10 +172,10 @@ export const remove = (req, res) =>  res.send('/remove');
 export const profile = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById({_id: id}).populate('videos').populate({
-    path: "videos",
+    path: 'videos',
     populate: {
-      path: "owner",
-      model: "User",
+      path: 'owner',
+      model: 'User',
     },
   });
   if (!user) {

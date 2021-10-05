@@ -52,10 +52,6 @@ export const postEdit = async (req, res) => {
   return res.redirect(`/videos/${id}`);
 };
 
-export const getUpload = (req, res) => {
-  return res.render('upload');
-};
-
 export const postUpload = async (req, res) => {
   console.log('업로드 시작');
   // console.log(req.body);
@@ -89,10 +85,9 @@ export const getDelete = async (req, res) => {
   const { _id } = req.user;
   const video = await Video.findById(id);
   if (!video) {
-    return res.status(404).render('404', { pageTitle: 'Video not found.' });
+    return res.status(404).send({ msg: '비디오가 없습니다'});
   }
   if (String(video.owner) !== String(_id)) {
-    console.log('inner');
     return res.status(403).send({ msg: '실패' })
   }
 
@@ -102,7 +97,6 @@ export const getDelete = async (req, res) => {
 
 export const search = async (req, res) => {
   const { keyword } = req.query;
-  console.log(keyword);
   let videos = [];
   if (keyword) {
     videos = await Video.find({
@@ -115,7 +109,6 @@ export const search = async (req, res) => {
 };
 
 export const registerView = async (req, res) => {
-  console.log('views');
   const { id } = req.params;
   const video = await Video.findByIdAndUpdate(id);
   if (!video) {
