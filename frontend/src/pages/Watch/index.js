@@ -54,7 +54,7 @@ const WatchContents = styled.div`
 const DateSpliter = (date) => {
   const splited = date.split('T');
   return `${splited[0]} ${splited[1].slice(0, -5)}`;
-}
+};
 
 function Watch() {
   const history = useHistory();
@@ -67,13 +67,13 @@ function Watch() {
         const { video } = data;
         setCurrentVideo(video)
       })
-      .catch(e => console.log(e));
+      .catch((err) => console.log(err));
   }, [id]);
 
   const handleDlelete = () => {
     axios.get(`/apis/videos/${id}/delete`)
       .then(({ data }) => history.push('/'))
-      .catch(e => console.log(e));
+      .catch((err) => console.log(err));
   }
   return (
     <WatchContainer>

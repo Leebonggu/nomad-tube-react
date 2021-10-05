@@ -46,7 +46,6 @@ const InputContainer = styled.div`
   flex: 4;
   display: flex;
   flex-direction: column;
-
 `;
 
 const SocialLoginContainer = styled.div`
@@ -62,6 +61,7 @@ const SocialLoginText = styled.div`
   display: flex;
   align-items: center;
 `;
+
 const SocialLoginButtonContainer = styled.div`
   width: 100%;
   padding: 1rem;
@@ -79,7 +79,6 @@ function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = ({ email, password }) => {
     axios.post('/apis/root/login',{ email, password })
-      // eslint-disable-next-line consistent-return
       .then(({ data }) => {
         const { isLoggedIn, userId } = data;
         setIsLoggedIn(isLoggedIn);
@@ -88,7 +87,6 @@ function Login() {
       })
       .catch((e) => {
         const { msg } = e.response.data;
-        console.log(msg);
         setError(msg);
       })
   };

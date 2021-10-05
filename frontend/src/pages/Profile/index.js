@@ -5,6 +5,7 @@ import { Container } from 'styles/common';
 import Me from 'components/Profile/Me';
 import MyVideos from 'components/Profile/MyVideos';
 import AuthContext from 'context/AuthContext';
+import LoadingSpinner from 'common/loadingSpinner';
 
 const ProfileContainer = styled(Container)`
   display: flex;
@@ -14,20 +15,20 @@ const ProfileContainer = styled(Container)`
 `;
 
 function Profile() {
-  const [videos, setVideos] = useState([]);
+  const [userData, setUserData] = useState(null);
   const { userId } = useContext(AuthContext);
   useEffect(() => {
     axios.get(`/apis/users/${userId}`)
       .then(({ data }) => {
-        const { profileData: { videos: userVideos } } = data;
-        setVideos(userVideos);
+        const { profileData } = data;
+        setUserData(profileData);
       });
   }, [userId]);
-
+  if (!userData) return <LoadingSpinner />
   return (
     <ProfileContainer>
-      <Me />
-      <MyVideos videos={videos}/>
+      <Me avatar={userData.avatarUrl} />
+      <MyVideos videos={userData.videos}/>
     </ProfileContainer>
   )
 }

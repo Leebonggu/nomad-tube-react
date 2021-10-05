@@ -15,8 +15,6 @@ const SearchResultContainer = styled.div`
 
 
 function SearchResult({ videos }) {
-  console.log('videos', videos);
-  console.log('videos', videos.length);
   return (
     <SearchResultContainer>
       {videos.length ? (

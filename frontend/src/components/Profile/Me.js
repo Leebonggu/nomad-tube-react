@@ -1,14 +1,17 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Button } from 'components/common';
 
 const MeContainer = styled.div`
   flex: 1;
   margin: 2rem 0;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-
 `;
 
 const MePhoto = styled.img`
@@ -18,12 +21,33 @@ const MePhoto = styled.img`
   border-radius: 50%;
 `;
 
-function Me() {
+const  ButtonContainer = styled.div`
+    margin: 1rem 0;
+    button {
+      margin: 0 1rem;
+    }
+`;
+
+function Me({ avatar }) {
+  const history = useHistory();
   return (
     <MeContainer>
-      <MePhoto src="https://i.guim.co.uk/img/media/b03ec3ca8b7b3c81a916520f6ca33a576bff84e7/0_328_3500_2099/master/3500.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=1f26a8055010e6b538c9961e33b20d7b"/>
+      <MePhoto src={avatar} />
+      <ButtonContainer>
+        <Button onClick={() => {history.push('/edit-profile')}}>프로필수정</Button>
+        <Button onClick={() => {history.push('/change-password')}}>비밀번호변경</Button>
+      </ButtonContainer>
     </MeContainer>
   )
 }
 
 export default Me;
+
+Me.propTypes = {
+  avatar: PropTypes.string,
+}
+
+Me.defaultProps = {
+  avatar: 'https://iupac.org/wp-content/uploads/2018/05/default-avatar-768x768.png',
+};
+

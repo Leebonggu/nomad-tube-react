@@ -7,8 +7,7 @@ import AuthContext from 'context/AuthContext';
 
 
 
-function ProtectedRoute({ path, component: Component, render, ...rest }) {
-  const { isLoggedIn } = useContext(AuthContext);
+function ProtectedRoute({ path, component: Component, render, isLoggedIn, ...rest }) {
   return (
     <Route 
       path={path}
@@ -27,4 +26,5 @@ ProtectedRoute.propTypes = {
   path: PropTypes.string.isRequired,
   component: PropTypes.elementType,
   render: PropTypes.func,
+  isLoggedIn: PropTypes.bool
 };
