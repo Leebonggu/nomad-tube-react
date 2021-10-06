@@ -182,16 +182,29 @@ https://o-live.tistory.com/4
 - curl -sL
 
 
-### EC2 Frontend
-
-### EC2 Backend
-
+### EC2 Frontend & Backend
+\
 1. git clone으로 코드를 받음
 2. node설치
 - nvm으로 처음에 설치 > sudo npm, sudo node를 읽지 못하는 오류가 생김
 - 그래서 apt-get으로 노드 설치
 3. .env를 생성해서 환경변수 설정
 4. 설치 후 pm2를 통해 Back환경에서 노드가 계속 돌아가도록 설정
+
+### EC2 Frontend
+
+1. Create-react-app을 사용하는 경우 package.json에서 시작 명령어를 다시 만들어줘야함
+2. 나같은 경우 아래와 같이
+- "production": "NODE_ENV=production pm2 serve build 80 --spa",
+3. NODE_ENV를 써주는 이유는 개발모드일떄는 3000으로 돌리고 싶었음
+
+### EC2 Backend
+
+1. 시작명령어를 만들어 줘야함
+2. 나같은 경우
+- "start": "NODE_ENV=production pm2 start --interpreter ./node_modules/.bin/babel-node src/init.js",
+3. interpreter를 쓰는이유는 노드는 기본적으로 es6를 지원하지 않음
+4. 노마드코더에서는 그 부분을 바벨로 바꿔서 6를 사용했기에, 그냥 노드로 돌릴경우 **import~form**이렇게 쓴 코드에 모두 에러가 생김. 그래서 babel-node로 번역이 필요
 5. Mongodb주소를 atlas로 이동
 - 개발모드에선 로컬, 배포모드에서는 atlas로 돌아가도록
 - **name: 'MongoServerSelectionError'** 에러가 발생할 수있는데, Atlas에서 Network 설정에 아이피를 입략해줘야함

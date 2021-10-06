@@ -26,6 +26,7 @@ export const postJoin = async (req, res) => {
 };
 
 export const getLogin = (req, res) => {
+  console.log('getlogin', req.user);
   if (req.user) {
     return res.status(200).send({ msg: 'Login', isLoggedIn: true, userId: req.user._id });
   }
@@ -49,6 +50,7 @@ export const postLogin = (req, res, next) => {
       // res.setHeader에 쿠카기 들어감
       // 서버에 통채로 들고있는건 세션
       // 근데 모든 정보를 들고있으면 무거움
+      console.log('loginpost', user);
       return res.status(200).send({ isLoggedIn: true, userId: user._id });
     })
   })(req, res, next);
