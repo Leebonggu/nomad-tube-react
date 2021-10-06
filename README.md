@@ -156,6 +156,8 @@ axios.default.withCredentials = true;
 7. 인스턴스를 클릭해서, 연결을 클릭
 - ssh로 시작하는 주소가 중요
 - .pem 파일이 있는 경로로가서 저 명려어를 실행
+8. 매번 ssh 주소 치고 들어가기 귀찮아서 zshrc에 alias로 등록해놓음
+
 ```md
 <!-- 이 에러가 발생할 수 있음 -->
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -170,7 +172,6 @@ ubuntu@ec2-52-78-74-28.ap-northeast-2.compute.amazonaws.com: Permission denied (
 chmod 600 key-pair-이름.pem //해결책
 https://o-live.tistory.com/4
 ```
-![](./image/ec2-3.png)
 
 ### in ubuntu
 
@@ -180,7 +181,6 @@ https://o-live.tistory.com/4
 - sudo apt-get install -y build-essential // 이게있어서 노드 에러가 줄어듬
 - sudo apt-get install curl
 - curl -sL
-
 
 ### EC2 Frontend & Backend
 
