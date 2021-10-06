@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use('/uploads', express.static('uploads'));
 app.use(cors({
-  origin: ['http://localhost:3000', 'nomadtube-react.com'],
+  origin: ['http://localhost:3000', 'nomadtube-react.com', 'http://52.78.74.28'],
   credentials: true,
 }));
 app.use(logger);
