@@ -9,8 +9,9 @@ import Footer from 'components/Footer';
 import AuthContext from 'context/AuthContext';
 import ProtectedRoute from 'common/ProtectedRoute';
 import ChangePassword from 'pages/ChangePassword';
+import { backUrl } from 'config';
 
-axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.baseURL = backUrl;
 axios.defaults.withCredentials = true;
 
 function App() {
