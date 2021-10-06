@@ -10,6 +10,8 @@ import MongoStore from 'connect-mongo';
 import apis from './routers';
 import passportConfig from './passport';
 
+const DB_URL = process.env.NODE_ENV === 'production' ? process.env.MONGO_URL_PRODUCTION : process.env.MONGO_URL;
+
 const app = express();
 let logger = morgan('dev');
 passportConfig();
@@ -34,7 +36,7 @@ app.use(session({
   secret: process.env.COOKIE_SECRET,
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+  store: MongoStore.create({ mongoUrl: DB_URL}),
 }));
 app.use(passport.initialize());
 app.use(passport.session());
