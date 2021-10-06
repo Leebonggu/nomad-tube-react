@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import session from 'express-session';
+import helmet from 'helmet';
+import hpp from 'hpp';
+;import session from 'express-session';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
@@ -9,12 +11,18 @@ import apis from './routers';
 import passportConfig from './passport';
 
 const app = express();
-const logger = morgan('dev');
-
+let logger = morgan('dev');
 passportConfig();
+
+if (process.env.NODE_ENV === 'production') {
+  logger = morgan('combined');
+  app.use(helmet());
+  app.use(hpp());
+}
+
 app.use('/uploads', express.static('uploads'));
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'nomadtube-react.com'],
   credentials: true,
 }));
 app.use(logger);

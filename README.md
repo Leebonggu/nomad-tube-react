@@ -129,16 +129,17 @@ axios.default.withCredentials = true;
 
 ### Comment
 
-- 댓글 기능 추가
-- 이미 설정되어있던 코멘트 라우터와 프론트를 연결
-- 코멘트의 주인은 삭제보튼이 보임
-- 삭제 라우터는 새로 만들어서 추가
+1. 댓글 기능 추가
+2. 이미 설정되어있던 코멘트 라우터와 프론트를 연결
+3. 코멘트의 주인은 삭제보튼이 보임
+4. 삭제 라우터는 새로 만들어서 추가
 
 ##  배포
-- 기본적으로 서버는 컴퓨터로 돌린다.
-- 그런데 내가 사용하는 컴퓨터로 할 경우, 컴퓨터가 종료되면 서버가 멈추는 문제가 발생
-- 따라서 24시간 꺼지지 않는 컴퓨터가 필요
-- 그 대안이 바로 EC2
+
+1. 기본적으로 서버는 컴퓨터로 돌린다.
+2. 그런데 내가 사용하는 컴퓨터로 할 경우, 컴퓨터가 종료되면 서버가 멈추는 문제가 발생
+3. 따라서 24시간 꺼지지 않는 컴퓨터가 필요
+4. 그 대안이 바로 EC2
 
 ### EC2
 
@@ -152,4 +153,45 @@ axios.default.withCredentials = true;
 6. 인스턴스를 복제해서 한개를 더 만든다
 - 하나는 프론트, 하나는 서버용 컴퓨터
 - 오른쪽 클릭 > 이미지 및 템플릿 > 이런방석으로 더 많이 시작
+7. 인스턴스를 클릭해서, 연결을 클릭
+- ssh로 시작하는 주소가 중요
+- .pem 파일이 있는 경로로가서 저 명려어를 실행
+```md
+<!-- 이 에러가 발생할 수 있음 -->
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0644 for 'nomad-tube-react.pem' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "nomad-tube-react.pem": bad permissions
+ubuntu@ec2-52-78-74-28.ap-northeast-2.compute.amazonaws.com: Permission denied (publickey).
 
+chmod 600 key-pair-이름.pem //해결책
+https://o-live.tistory.com/4
+```
+![](./image/ec2-3.png)
+
+### in ubuntu
+
+1. git clone으로 내 코드 가져오기
+2. 노드설치
+- sudo apt-get update
+- sudo apt-get install -y build-essential // 이게있어서 노드 에러가 줄어듬
+- sudo apt-get install curl
+- curl -sL
+
+
+### EC2 Frontend
+
+### EC2 Backend
+
+1. git clone으로 코드를 받음
+2. node설치
+- nvm으로 처음에 설치 > sudo npm, sudo node를 읽지 못하는 오류가 생김
+- 그래서 apt-get으로 노드 설치
+3. .env를 생성해서 환경변수 설정
+4. 설치 후 pm2를 통해 Back환경에서 노드가 계속 돌아가도록 설정
+5. Mongodb주소를 atlas로 이동
+- 개발모드에선 로컬, 배포모드에서는 atlas로 돌아가도록
+- **name: 'MongoServerSelectionError'** 에러가 발생할 수있는데, Atlas에서 Network 설정에 아이피를 입략해줘야함

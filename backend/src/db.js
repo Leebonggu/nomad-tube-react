@@ -1,5 +1,11 @@
 import mongoose from 'mongoose';
-mongoose.connect(process.env.MONGO_URL , {
+  
+const DB_URL = process.env.NODE_ENV === 'production' ? process.env.MONGO_URL_PRODUCTION : process.env.MONGO_URL;
+
+console.log(process.env.NODE_ENV);
+console.log("DB_URL",DB_URL);
+
+mongoose.connect(DB_URL , {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
