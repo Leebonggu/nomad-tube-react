@@ -5,7 +5,7 @@ const DB_URL = process.env.NODE_ENV === 'production' ? process.env.MONGO_URL_PRO
 console.log(process.env.NODE_ENV);
 console.log("DB_URL",DB_URL);
 
-mongoose.connect(DB_URL , {
+mongoose.connect(process.env.MONGO_URL_PRODUCTION , {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
