@@ -183,7 +183,7 @@ https://o-live.tistory.com/4
 
 
 ### EC2 Frontend & Backend
-\
+
 1. git clone으로 코드를 받음
 2. node설치
 - nvm으로 처음에 설치 > sudo npm, sudo node를 읽지 못하는 오류가 생김
@@ -215,3 +215,12 @@ https://o-live.tistory.com/4
 2. sudo npx pm2 log
 3. sudo npx pm2 monit
 4. sudo npx pm2 reload all
+
+## Cookie와 Cors는 다른문제
+
+- 현재 ec2 2개를 사용하기때문에, 서로 도메인이 다름
+- 그래서 서로 쿠키를 공유하지 못하는 문제가 발생
+- 도메인 구매: 가비아에서 구매함. 1900원
+- 네임버서는 Route53
+
+## 이제 nginx, https 도입해보기
