@@ -11,6 +11,7 @@ import ProtectedRoute from 'common/ProtectedRoute';
 import ChangePassword from 'pages/ChangePassword';
 import { backUrl } from 'config';
 
+console.log('http://13.125.118.116', backUrl);
 axios.defaults.baseURL = backUrl;
 axios.defaults.withCredentials = true;
 

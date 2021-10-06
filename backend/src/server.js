@@ -3,7 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import hpp from 'hpp';
-;import session from 'express-session';
+import session from 'express-session';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
@@ -14,17 +14,16 @@ const DB_URL = process.env.NODE_ENV === 'production' ? process.env.MONGO_URL_PRO
 
 const app = express();
 let logger = morgan('dev');
-passportConfig();
 
 if (process.env.NODE_ENV === 'production') {
   logger = morgan('combined');
   app.use(helmet());
   app.use(hpp());
 }
-
+passportConfig();
 app.use('/uploads', express.static('uploads'));
 app.use(cors({
-  origin: ['http://localhost:3000', 'nomadtube-react.com', 'http://52.78.74.28'],
+  origin: ['http://localhost:3000','http://52.78.74.28', 'nomadtube-react.com', ],
   credentials: true,
 }));
 app.use(logger);
@@ -36,7 +35,7 @@ app.use(session({
   secret: process.env.COOKIE_SECRET,
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: DB_URL}),
+  store: MongoStore.create({ mongoUrl: DB_URL }),
 }));
 app.use(passport.initialize());
 app.use(passport.session());
