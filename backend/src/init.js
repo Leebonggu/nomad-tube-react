@@ -5,7 +5,7 @@ import './models/User';
 import './models/Comment';
 import app from './server';
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.NODE_ENV ? 80 : 4000;
 
 app.listen(PORT, () => {
   console.log(`Server is running now: ${PORT}`);

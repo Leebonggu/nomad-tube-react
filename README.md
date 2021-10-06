@@ -195,3 +195,10 @@ https://o-live.tistory.com/4
 5. Mongodb주소를 atlas로 이동
 - 개발모드에선 로컬, 배포모드에서는 atlas로 돌아가도록
 - **name: 'MongoServerSelectionError'** 에러가 발생할 수있는데, Atlas에서 Network 설정에 아이피를 입략해줘야함
+
+### pm2
+
+1. sudo npx pm2 start ~
+2. sudo npx pm2 log
+3. sudo npx pm2 monit
+4. sudo npx pm2 reload all
