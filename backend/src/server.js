@@ -19,13 +19,19 @@ if (process.env.NODE_ENV === 'production') {
   logger = morgan('combined');
   app.use(helmet());
   app.use(hpp());
+  app.use(cors({
+    origin: 'http://devongu.site',
+    credentials: true,
+  }));
+} else {
+  app.use(cors({
+    origin: true,
+    credentials: true,
+  }));
 }
 passportConfig();
 app.use('/uploads', express.static('uploads'));
-app.use(cors({
-  origin: ['http://localhost:3000','devongu.site' ],
-  credentials: true,
-}));
+
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
