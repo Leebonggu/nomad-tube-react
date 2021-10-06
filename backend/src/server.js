@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'production') {
 passportConfig();
 app.use('/uploads', express.static('uploads'));
 app.use(cors({
-  origin: ['http://localhost:3000','http://52.78.74.28', 'nomadtube-react.com', ],
+  origin: ['http://localhost:3000','devongu.site' ],
   credentials: true,
 }));
 app.use(logger);
@@ -36,6 +36,11 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: DB_URL }),
+  cookie: {
+    httpOnly: true,
+    secure: false,
+    domain: process.env.NODE_ENV === 'production' && '.devongu.site'
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
