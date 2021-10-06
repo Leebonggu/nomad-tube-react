@@ -38,6 +38,12 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get('/' , (req, res) => {
+  console.log('/home');
+  return res.send('/home');
+})
+
 app.use('/apis', apis);
 
 export default app;
