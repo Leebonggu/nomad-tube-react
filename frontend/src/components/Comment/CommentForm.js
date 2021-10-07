@@ -8,7 +8,7 @@ const CommentFormContainer = styled.form`
   flex: 1;
   display: flex;
   input {
-    flex: 4;
+    flex: 5;
     border-radius: 5px;
   }
   button {
@@ -22,11 +22,12 @@ function CommentForm({
   comment,
   handleComment,
   handleSubmitComment,
+  userId,
 }) {
   return (
     <CommentFormContainer onSubmit={handleSubmitComment}>
       <Input type="text" value={comment} onChange={handleComment} required/>
-      <Button type="submit">작성</Button>
+      <Button type="submit">{userId ? '작성' : '로그인이필요합니다'}</Button>
     </CommentFormContainer>
   );
 }
@@ -37,4 +38,9 @@ CommentForm.propTypes = {
   comment: PropTypes.string.isRequired,
   handleComment: PropTypes.func.isRequired,
   handleSubmitComment: PropTypes.func.isRequired,
+  userId: PropTypes.string,
 };
+
+CommentForm.defaultProps = {
+  userId: '',
+}

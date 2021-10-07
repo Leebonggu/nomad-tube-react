@@ -6,20 +6,23 @@ import VideoListItem from './VideoListItem';
 
 const VideoListContainer = styled.div`
   flex: 1;
-  height: 80vh;
-  display: flex;;
+  height: ${({ len }) => (len > 2 ? '100%' : '100vh')};
+  display: flex;
   flex-wrap: wrap;
   align-items: ${({ center }) => (center ? 'center' : '')};
   @media screen and (max-width: 992px) {
     /* align-items: center; */
+    justify-content: center;
+    height: 100vh;
+    /* flex-direction: column; */
   }
 `;
 
 function VideoList({ videos }) {
-  if (!videos.length) return <VideoListContainer center>비디오가 없습니다</VideoListContainer>
+  if (!videos.length) return <VideoListContainer center len={1}>비디오가 없습니다</VideoListContainer>
   return (
-    <VideoListContainer>
-      {videos.map((video) => <VideoListItem key={video._id} video={video} />)}
+    <VideoListContainer len={videos.length}>
+      {[...videos].map((video) => <VideoListItem key={video._id} video={video} />)}
     </VideoListContainer>
   )
 }

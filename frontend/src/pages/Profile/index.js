@@ -8,6 +8,7 @@ import AuthContext from 'context/AuthContext';
 import LoadingSpinner from 'common/loadingSpinner';
 
 const ProfileContainer = styled(Container)`
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

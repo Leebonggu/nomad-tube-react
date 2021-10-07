@@ -7,7 +7,6 @@ import { Container } from 'styles/common';
 import axios from 'axios';
 
 const SearchContainer = styled(Container)`
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

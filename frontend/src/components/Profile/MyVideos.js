@@ -15,8 +15,6 @@ const MyVideosContainer = styled.div`
   }
 `;
 
-
-
 function MyVideos({ videos }) {
   return (
     <MyVideosContainer>

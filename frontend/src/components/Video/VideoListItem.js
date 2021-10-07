@@ -3,17 +3,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { red, white } from 'styles/color';
+
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i += 1) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 const VideoListItemContainer = styled(Link)`
-  /* flex: 1; */
+  width: 20rem;
+  height: 20rem;
+  margin: 1rem;
   /* display: flex; */
   display: flex;
   flex-direction: column;
-  margin: 1rem;
-  width: 240px;
-  /* max-width: 240px; */
-  height: 200px;
+  justify-content: center;
+  align-items: center;
   border-radius: 10px;
 
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -21,30 +29,38 @@ const VideoListItemContainer = styled(Link)`
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
   @media screen and (max-width: 768px) {
-    width: 90%;
-    min-width: 240px;
-    /* height: 300px; */
+    /* padding: 10rem 0; */
+    width: 100%;
   }
 `;
 
 const Thumbnail = styled.div`
-  border-radius: 10px 10px 0 0;
   flex: 3;
-  display: flex;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 10px 10px 0 0;
+  background-color: ${({ color }) => color};
   font-weight: 800;
+  display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 2rem;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
+
 const Info = styled.div`
   border-radius: 0 0 10px 10px;
   flex: 1;
   padding: 1rem;
+  display: flex;
 `;
 
 function VideoListItem({ video }) {
   return (
-    <VideoListItemContainer to={`/watch/${video._id}`}>
-      <Thumbnail>{video.title}</Thumbnail>
+    <VideoListItemContainer  to={`/watch/${video._id}`}> 
+      <Thumbnail color={getRandomColor()}>{video.title}</Thumbnail>
       <Info>{video.description}</Info>
     </VideoListItemContainer>
   )

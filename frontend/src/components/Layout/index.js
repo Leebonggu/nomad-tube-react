@@ -3,9 +3,14 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { subBackgroud } from 'styles/color';
 import { Container } from 'styles/common';
+import Footer from 'components/Footer';
 
 const LayoutContainer = styled(Container)`
-  /* width: 100%; */
+  /* display: flex;
+  flex-direction: column; */
+  height: 100%;
+  flex: 8;
+  display: box;
 `;
 
 function Layout({ children }) {

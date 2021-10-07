@@ -4,9 +4,13 @@ import PropTypes from 'prop-types';
 import { Button } from 'components/common';
 
 const SearchBarContainer = styled.form`
+  flex: 1;
+  margin: 2rem 0;
   width: 100%;
-  margin: 3rem 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const InputContainer = styled.div`

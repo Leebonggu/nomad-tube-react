@@ -3,7 +3,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
-import ReactPlayer from 'react-player';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import AuthContext from 'context/AuthContext';
@@ -13,6 +12,7 @@ import CommentForm from 'components/Comment/CommentForm';
 import CommentList from 'components/Comment/CommentList';
 
 const WatchContainer = styled.div`
+  margin-top: 2rem;
   width: 100%;  
   /* height: 100%; */
   display: flex;
@@ -72,7 +72,7 @@ function Watch() {
   const { userId } = useContext(AuthContext);
   const [currentVideo, setCurrentVideo] = useState(null);
   const [comments, setComments] = useState([]);
-  const [text, handleText] = useInput('');
+  const [text, handleText, setText] = useInput('');
 
   useEffect(() => {
     axios.get(`/apis/videos/${id}`)
@@ -90,13 +90,19 @@ function Watch() {
       .catch((err) => console.log(err));
   };
 
+  // eslint-disable-next-line consistent-return
   const handleSubmitComment = (e) => {
     e.preventDefault();
+    if (!userId) {
+      setText('');
+      return alert('로그인이 필요합니다');
+    }
     if (text) {
       axios.post(`/apis/common/videos/${id}/comment`, { text })
         .then(({ data }) => {
           const { newComment } = data;
-          setComments([newComment, ...comments ])
+          setComments([newComment, ...comments ]);
+          setText('');
         })
         .catch((err) => console.log(err.response))
     } else {
@@ -137,6 +143,7 @@ function Watch() {
               comment={text}
               handleComment={handleText}
               handleSubmitComment={handleSubmitComment}
+              userId={userId}
             />
             <CommentList
               comments={comments}

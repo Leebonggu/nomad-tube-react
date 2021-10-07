@@ -4,12 +4,14 @@ import styled from 'styled-components';
 import VideoList from 'components/Video/VideoList';
 
 const SearchResultContainer = styled.div`
+  flex: 3;
   width: 100%;
   display: flex;
   justify-content: flex-start;
   height: 80vh;
 
   .empty {
+    height: 100vh;
   }
 `;
 
