@@ -51,7 +51,7 @@ function App() {
             </Route>
           </Switch>
         </Layout>
-        <Footer />
+        <Footer /> 
       </Router>
     </AuthContext.Provider>
   );

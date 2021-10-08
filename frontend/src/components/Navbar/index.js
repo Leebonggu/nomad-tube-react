@@ -10,13 +10,14 @@ import AuthContext from 'context/AuthContext';
 
 
 const Nav = styled.nav`
+  flex: 1; 
   width: 100%;
   background-color: ${background};
   height: 90px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: sticky;
+  /* position: fixed; */
   font-size: 1.5rem;
   top: 0;
   z-index: 999;

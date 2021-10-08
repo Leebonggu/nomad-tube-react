@@ -5,11 +5,14 @@ import { Container } from 'styles/common';
 import VideoList from 'components/Video/VideoList';
 import AuthContext from 'context/AuthContext';
 
-const HomeContainer = styled(Container)`
+const HomeContainer = styled.div`
+  flex: 8;
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  /* height: 100%; */
 `;
 
 function Home() {

@@ -3,11 +3,9 @@ import styled from 'styled-components';
 import { background, white } from 'styles/color';
 
 const FooterContainer = styled.section`
-  flex: 1;
-  /* height: 30vh; */
-  padding: 2rem 0;
+  width: 100%;
+  height: 90px;
   display: flex;
-  margin-top: 50px;
   justify-content: space-between;
   background-color: ${background};
   color: ${white};

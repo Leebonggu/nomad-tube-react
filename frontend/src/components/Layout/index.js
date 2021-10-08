@@ -4,21 +4,20 @@ import PropTypes from 'prop-types';
 import { subBackgroud } from 'styles/color';
 import { Container } from 'styles/common';
 import Footer from 'components/Footer';
+import { Header } from 'antd/lib/layout/layout';
+import Navbar from 'components/Navbar';
 
 const LayoutContainer = styled(Container)`
-  /* display: flex;
-  flex-direction: column; */
-  height: 100%;
-  flex: 8;
-  display: box;
-`;
+  min-height: 100%;
+  position: relative;
+  `;
 
 function Layout({ children }) {
   return (
     <LayoutContainer>
       {children}
     </LayoutContainer>
-  )
+)
 }
 
 export default Layout;

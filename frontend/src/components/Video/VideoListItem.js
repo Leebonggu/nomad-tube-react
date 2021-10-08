@@ -14,7 +14,7 @@ function getRandomColor() {
 }
 
 const VideoListItemContainer = styled(Link)`
-  width: 20rem;
+  width: 25rem;
   height: 20rem;
   margin: 1rem;
   /* display: flex; */
@@ -30,6 +30,7 @@ const VideoListItemContainer = styled(Link)`
   }
   @media screen and (max-width: 768px) {
     /* padding: 10rem 0; */
+  /* height: 20%; */
     width: 100%;
   }
 `;
