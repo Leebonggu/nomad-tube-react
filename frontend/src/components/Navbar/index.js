@@ -1,13 +1,11 @@
 import React, { useState, useCallback } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link, useHistory } from 'react-router-dom';
 import { background, red, white, black } from 'styles/color';
 import { Container } from 'styles/common';
 import { Button } from 'components/common';
-import AuthContext from 'context/AuthContext';
-import { useDispatch, useSelector } from 'react-redux';
 import { getLogout } from 'modules/auth';
 
 
@@ -102,8 +100,8 @@ const NavMenuItem = styled.li`
 function Navbar() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { isLoggedIn, userId } = useSelector((state) => state.auth);
   const [openHamburger, setOpenHamburger] = useState(false);
-  const { isLoggedIn , userId } = useSelector((state) => state.auth);
 
   const  handleOpenHamburger =  useCallback(() => {
     setOpenHamburger(prev => !prev);
@@ -111,7 +109,6 @@ function Navbar() {
 
   const Logout = useCallback(() => {
     dispatch(getLogout()).then(res => {
-      console.log(res);
       history.push('/');
     });
   }, [dispatch, history]);
