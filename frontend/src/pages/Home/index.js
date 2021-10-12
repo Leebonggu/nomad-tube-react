@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { Container } from 'styles/common';
 import VideoList from 'components/Video/VideoList';
-import AuthContext from 'context/AuthContext';
 
 const HomeContainer = styled.div`
   flex: 8;
@@ -32,7 +30,7 @@ function Home() {
     <HomeContainer>
       <VideoList videos={videos}/>
     </HomeContainer>
-  )
+  );
 }
 
 export default Home

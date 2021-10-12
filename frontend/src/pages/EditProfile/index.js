@@ -3,6 +3,8 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import EditProfileForm from 'components/EditProfile/EditProfileForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeUserInformration, getUserEditInfo, postUserEditInfo } from 'modules/auth';
 
 const EditProfileContainer = styled.div`
   height: 90vh;
@@ -14,7 +16,6 @@ const EditProfileContainer = styled.div`
 
 
 const MePhoto = styled.img`
-  border: 1px solid green;
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -22,23 +23,21 @@ const MePhoto = styled.img`
 
 function EditProfile() {
   const history  = useHistory();
-  const [currentUserData, setCurrentUserData] = useState({});
-  const [error, setError] = useState('');
+  // const [currentUserData, setCurrentUserData] = useState({});
+  // const [error, setError] = useState('');
   const [imageFile, setImageFile] = useState('');
+  const { userData, error } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   useEffect(() => {
-    axios.get(`/apis/users/edit`)
-      .then(({ data }) => {
-        const { user } = data;
-        setCurrentUserData(user);
-        setImageFile(user.avatarUrl)
-      })
+    dispatch(getUserEditInfo()).then(() => {
+      setImageFile(userData.avatarUrl);
+    })
   }, []);
 
 
   const handleLocation = (e) => {
     const { value } = e.target;
-    const newUserData = { ...currentUserData, location: value };
-    setCurrentUserData(newUserData);
+    dispatch(changeUserInformration({ ...userData, location: value }));
   };
 
   const handleImage = (e) => {
@@ -51,24 +50,18 @@ function EditProfile() {
     if (imageFile) {
       formData.append('avatar', imageFile);
     }
-    formData.append('location', currentUserData.location);
-    axios.post('/apis/users/edit', formData)
-      .then(({ data }) => {
-        const { updatedUser } = data;
-        setCurrentUserData(updatedUser);
-        return history.push('/')
-      })
-      .catch((err) => {
-        const{ data: { msg } } = err.response;
-        setError(msg);
-      });
+    formData.append('location', userData.location);
+    dispatch(postUserEditInfo(formData)).then(() => history.push('/'));
+    axios.post('/apis/users/edit', formData).then(() => {
+      alert('프로필이 정상적을 변경되었습니다');
+    });
   };
 
   return (
     <EditProfileContainer>
-      {currentUserData.avatarUrl ?<MePhoto src={currentUserData.avatarUrl}/> : '없음'}
+      {userData.avatarUrl ?<MePhoto src={userData.avatarUrl}/> : '없음'}
       <EditProfileForm
-        currentUserData={currentUserData}
+        currentUserData={userData}
         handleLocation={handleLocation}
         handleSubmit={handleSubmit}
         handleImage={handleImage}

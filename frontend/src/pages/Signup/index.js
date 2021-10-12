@@ -6,8 +6,9 @@ import { useHistory } from 'react-router-dom';
 import { black, white } from 'styles/color';
 import { Container } from 'styles/common';
 import SignupForm from 'components/Signup/SignupForm';
-import useInput from 'hooks/useInput';
 import { Warning } from 'components/common';
+import { useDispatch, useSelector } from 'react-redux';
+import { postSignup } from 'modules/auth';
 
 const SignupContainer = styled(Container)`
   height: 100vh;
@@ -55,20 +56,12 @@ axios.defaults.baseURL = 'http://localhost:4000';
 
 function Signup() {
   const history = useHistory();
-  const [error, _, setError] = useInput(null);
+  const { error } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = ({ email, password, passwordConfirm, location }) => {
-    // if (password !== passwordConfirm) {
-    //   return setError('비밀번호가 일치하지 않습니다');
-    // }
-    axios.post('/apis/root/join', { email, password, passwordConfirm, location })
-      .then(({ data, status }) => history.push('/login'))
-      .catch((e) => {
-        // setError(e.error);
-        const { msg } = e.response.data;
-        setError(msg);
-      });
-    return 0;
+    const data = { email, password, passwordConfirm, location }; 
+    dispatch(postSignup(data));
   }
 
   return (

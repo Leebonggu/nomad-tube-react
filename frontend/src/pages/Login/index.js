@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from 'react-redux';
 import { black, white } from 'styles/color';
 import { Container } from 'styles/common';
 import LoginForm from 'components/Login/LoginForm';
@@ -9,6 +10,7 @@ import useInput from 'hooks/useInput';
 import { Button, Warning } from 'components/common';
 import { useHistory, Redirect } from 'react-router';
 import AuthContext from 'context/AuthContext';
+import { postLoginAsync } from 'modules/auth';
 
 const LoginContainer = styled(Container)`
   height: 100vh;
@@ -74,32 +76,22 @@ const SocialLoginButtonContainer = styled.div`
 
 function Login() {
   const history = useHistory();
-  const { setIsLoggedIn, setUserId } = useContext(AuthContext);
-  const [error, _, setError] = useInput(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const dispatch = useDispatch()
+  const { error } = useSelector(state => state.auth)
   const onSubmit = ({ email, password }) => {
-    axios.post('/apis/root/login',{ email, password })
-      .then(({ data }) => {
-        const { isLoggedIn, userId } = data;
-        setIsLoggedIn(isLoggedIn);
-        setUserId(userId)
-        history.push('/');
-      })
-      .catch((e) => {
-        const { msg } = e.response.data;
-        setError(msg);
-      })
+    dispatch(postLoginAsync({ email, password })).then(res => console.log(res));
   };
 
-  const handleGithubLogin = () => {
-    axios.get('/apis/users/github/start')
-      .then(({ data }) => {
-        const { isLoggedIn, userId } = data;
-        setIsLoggedIn(isLoggedIn);
-        setUserId(userId)
-        history.push('/');
-      });
-  }
+  // const handleGithubLogin = () => {
+  //   axios.get('/apis/users/github/start')
+  //     .then(({ data }) => {
+  //       const { isLoggedIn, userId } = data;
+  //       setIsLoggedIn(isLoggedIn);
+  //       setUserId(userId)
+  //       history.push('/');
+  //     });
+  // }
 
   return (
     <LoginContainer>

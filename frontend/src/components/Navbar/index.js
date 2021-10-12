@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -7,6 +7,8 @@ import { background, red, white, black } from 'styles/color';
 import { Container } from 'styles/common';
 import { Button } from 'components/common';
 import AuthContext from 'context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { getLogout } from 'modules/auth';
 
 
 const Nav = styled.nav`
@@ -17,7 +19,7 @@ const Nav = styled.nav`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* position: fixed; */
+  position: absolute;
   font-size: 1.5rem;
   top: 0;
   z-index: 999;
@@ -99,20 +101,20 @@ const NavMenuItem = styled.li`
 
 function Navbar() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [openHamburger, setOpenHamburger] = useState(false);
-  const { isLoggedIn, setIsLoggedIn, userId } = useContext(AuthContext);
+  const { isLoggedIn , userId } = useSelector((state) => state.auth);
 
   const  handleOpenHamburger =  useCallback(() => {
     setOpenHamburger(prev => !prev);
   },[]);
 
   const Logout = useCallback(() => {
-    axios.get('/apis/users/logout')
-      .then(() => {
-        setIsLoggedIn(false);
-        history.push('/');
-      });
-  }, []);
+    dispatch(getLogout()).then(res => {
+      console.log(res);
+      history.push('/');
+    });
+  }, [dispatch, history]);
   
   return (
     <Nav>

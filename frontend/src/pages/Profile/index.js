@@ -1,11 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container } from 'styles/common';
 import Me from 'components/Profile/Me';
 import MyVideos from 'components/Profile/MyVideos';
-import AuthContext from 'context/AuthContext';
 import LoadingSpinner from 'common/loadingSpinner';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserInfo, resetUserInfo } from 'modules/auth';
 
 const ProfileContainer = styled(Container)`
   height: 100%;
@@ -16,15 +16,12 @@ const ProfileContainer = styled(Container)`
 `;
 
 function Profile() {
-  const [userData, setUserData] = useState(null);
-  const { userId } = useContext(AuthContext);
+  const { userId, userData } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   useEffect(() => {
-    axios.get(`/apis/users/${userId}`)
-      .then(({ data }) => {
-        const { profileData } = data;
-        setUserData(profileData);
-      });
-  }, [userId]);
+    dispatch(getUserInfo(userId));
+    return () => dispatch(resetUserInfo())
+  }, [userId, dispatch]);
   if (!userData) return <LoadingSpinner />
   return (
     <ProfileContainer>

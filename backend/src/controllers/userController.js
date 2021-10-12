@@ -26,7 +26,7 @@ export const postJoin = async (req, res) => {
 };
 
 export const getLogin = (req, res) => {
-  console.log('getlogin', req.user);
+  console.log(req.user);
   if (req.user) {
     return res.status(200).send({ msg: 'Login', isLoggedIn: true, userId: req.user._id });
   }
@@ -50,7 +50,6 @@ export const postLogin = (req, res, next) => {
       // res.setHeader에 쿠카기 들어감
       // 서버에 통채로 들고있는건 세션
       // 근데 모든 정보를 들고있으면 무거움
-      console.log('loginpost', user);
       return res.status(200).send({ isLoggedIn: true, userId: user._id });
     })
   })(req, res, next);
@@ -126,6 +125,9 @@ export const finishGithubLogin = async (req, res) => {
 export const getEdit = async (req, res) =>  {
   const { _id } = req.user;
   const user = await User.findById({ _id });
+  if (!user) {
+    return res.status(400).send({ msg: '로그인된 유조가 없습니다' });
+  }
   const data = { location: user.location, avatarUrl: user.avatarUrl ? user.avatarUrl : ''};
   return res.status(200).send({ msg: '성공', user: data });
 };
@@ -192,7 +194,6 @@ export const profile = async (req, res) => {
 };
 
 export const logout = (req, res) =>  {
-  console.log('logouyt');
   req.logout();
   req.session.destroy();
   return res.status(200).send({ msg: '로그아웃이 성공적으로 이루어졌습니다', isLoggedIn: false });

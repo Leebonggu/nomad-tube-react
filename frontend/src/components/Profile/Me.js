@@ -24,7 +24,12 @@ const MePhoto = styled.img`
 const  ButtonContainer = styled.div`
     margin: 1rem 0;
     button {
-      margin: 0 1rem;
+      margin: 1rem;
+    }
+
+    @media screen and (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
     }
 `;
 

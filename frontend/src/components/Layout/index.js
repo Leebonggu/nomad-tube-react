@@ -10,6 +10,7 @@ import Navbar from 'components/Navbar';
 const LayoutContainer = styled(Container)`
   min-height: 100%;
   position: relative;
+  margin-top: 8rem;
   `;
 
 function Layout({ children }) {

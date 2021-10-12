@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styled from 'styled-components';
 import { BrowserRouter as Router, Route, Switch}  from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Home, Watch, Login, Signup, Profile, EditProfile, NotFound, Search, Upload } from 'pages';
 import NavBar from 'components/Navbar';
 import Layout from 'components/Layout';
@@ -11,27 +11,20 @@ import AuthContext from 'context/AuthContext';
 import ProtectedRoute from 'common/ProtectedRoute';
 import ChangePassword from 'pages/ChangePassword';
 import { backUrl } from 'config';
+import { getLoginAsync } from 'modules/auth';
 
 axios.defaults.baseURL = backUrl;
 axios.defaults.withCredentials = true;
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(null);
-  const [error, setError] = useState(null);
+  const { isLoggedIn } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   useEffect(() => {
-    axios.get('/apis/root/login')
-      .then(({ data }) => {
-        const { isLoggedIn: serverLoggedIn, userId: serverUserId } = data;
-        setIsLoggedIn(serverLoggedIn);
-        setUserId(serverUserId)
-      })
-      .catch((e) => {
-        setError(e);
-      })
-  }, [isLoggedIn, userId]);
+    dispatch(getLoginAsync());
+  }, [dispatch]);
+  
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userId ,setUserId }}>
+    <>
       <Router>
         <GlobalStyle />
         <NavBar />
@@ -53,7 +46,7 @@ function App() {
         </Layout>
         <Footer /> 
       </Router>
-    </AuthContext.Provider>
+    </>
   );
 }
 
