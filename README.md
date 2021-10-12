@@ -18,7 +18,7 @@
 
 ## Front
 
-### New)Redux 도입
+### Redux 도입
 - 기존 contextAPI -> Redux-thunk로  변경
 - 현재 auth부분만 변경, 추후 video부분까지 바꿔야함
 - 지금까지 느끼는바는 역시 무엇이 되었든 중간에 도입하는 것은 생각보다 비용이 만이들어간다
