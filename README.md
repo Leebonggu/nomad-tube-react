@@ -55,12 +55,7 @@ box-sizing은 박스의 크기를 화면에 표시하는 방식을 변경하는 
 ### footer 고정
 - https://stackoverflow.com/questions/39857425/react-page-keep-footer-at-the-bottom-of-the-page
 
-### 아직 CSS가 좀 어럽네
-- 리스폰시브..
-- Width, Height
-- vw, vh, %, rem, em, px
-
-## 이제 서버랑 연결하면됨.
+## 이제 서버랑 연결하면됨
 
 ## Backend
 
