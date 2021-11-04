@@ -1,5 +1,16 @@
 # Front Page Migrate to React
 
+## Stack
+  - React
+  - Redux-thunk
+  - axios
+  - styled-components
+  - prop-types
+
+
+
+## 이제 nginx, https 도입해보기
+
 
 ## 일기
 
@@ -15,6 +26,3 @@
 - 남은 작업은 업데이트(수정작업들)
   - 섬네일
   - 배포
-
-
-## 이제 nginx, https 도입해보기
